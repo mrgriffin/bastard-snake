@@ -29,9 +29,14 @@ var TestRunner = (function () {
 			throw new AssertionError(message);
 	};
 
-	function run(name, func, logger) {
+	function run(name, func, logger, setUp, tearDown) {
 		try {
-			func.call(new UnitTest());
+			var unitTest = new UnitTest();
+			if (setUp !== undefined)
+				setUp.call(unitTest);
+			func.call(unitTest);
+			if (tearDown !== undefined)
+				tearDown.call(unitTest);
 		} catch (e) {
 			// TODO: Print a nicely formatted error message.
 			logger(name + (e.name ? "(" + e.name + ")" : "") + (e.message ? ": " + e.message : ""));
@@ -43,8 +48,9 @@ var TestRunner = (function () {
 	/*!
 	 * \fn bool runAll(tests, print)
 	 * \memberof TestRunner
-	 * \brief Runs all the test cases in tests.
+	 * \brief Runs all the test cases named \c test... in tests.
 	 * \detail Methods in \c UnitTest such as \c assert are made available via \c this during the evaluation of a test case.
+	 *         The methods setUp and tearDown are called before and after each test case respectively if they are defined.
 	 * \param tests an object that contains the test case functions to be evaluated.
 	 * \param logger a function accepting a \c String that logs the test output.
 	 * \return true if all tests succeeded; false otherwise.
@@ -54,10 +60,15 @@ var TestRunner = (function () {
 	function runAll(tests, logger) {
 		var count = 0, failures = 0;
 
+		var setUp = tests.setUp;
+		var tearDown = tests.tearDown;
+
 		for (var property in tests) {
-			count += 1;
-			if (!run(property, tests[property], logger))
-				failures++;
+			if (/test.+/.test(property)) {
+				count += 1;
+				if (!run(property, tests[property], logger, setUp, tearDown))
+					failures++;
+			}
 		}
 
 		logger(failures + " " + (failures === 1 ? "failure" : "failures"));
