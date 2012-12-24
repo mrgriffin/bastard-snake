@@ -16,14 +16,11 @@ var testEntity = {
 		var self = this;
 
 		var hitE0 = false;
-
 		var e0 = new E0();
-
 		e0.collisionHandlers = {
 			E0: function () { hitE0 = true; },
 			E1: function () { self.assert(false, "e0.onCollide(E1)"); }
 		};
-
 		e0.onCollide(e0);
 		this.assert(hitE0 === true, "!e0.onCollide(E0)");
 
