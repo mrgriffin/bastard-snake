@@ -21,6 +21,12 @@ var Entity = (function () {
 				for (var i in this.collisionHandlers)
 					if (that.name === i)
 						return this.collisionHandlers[i].call(this, that);
+		/*!
+		 * \fn void onUpdate()
+		 * \memberof Entity
+		 * \brief Called before this entity is updated.
+		 */
+		}, onUpdate: function () {
 		}
 	};
 
