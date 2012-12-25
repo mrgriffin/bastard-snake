@@ -27,14 +27,7 @@ var Entity = (function () {
 		 * \brief Called before this entity is updated.
 		 */
 		}, onUpdate: function () {
-		// TODO: Bring onCollide and update in line with eachother's naming scheme.
-		}, update: function () {
-			if (this.onUpdate !== undefined)
-				this.onUpdate();
-			this.x += this.vx;
-			this.y += this.vy;
-		}, vx: 0
-		 , vy: 0
+		}
 	};
 
 	return {
