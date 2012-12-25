@@ -8,6 +8,11 @@
  * \brief Contains a set of entities.
  */
 var Room = (function () {
+	/*!
+	 * \fn Room(width, height)
+	 * \memberof Room
+	 * \brief Constructs a room of size \p width by \p height.
+	 */
 	function Room(width, height) {
 		this.width = width;
 		this.height = height;
@@ -25,7 +30,7 @@ var Room = (function () {
 	/*!
 	 * \fn Action addEntity(entity)
 	 * \memberof Room
-	 * \brief Returns an Action that adds an entity to a room.
+	 * \brief Returns an \c Action that adds an entity to a room.
 	 */
 	Room.addEntity = function (entity) {
 		return new AddEntity(entity);
@@ -42,20 +47,35 @@ var Room = (function () {
 	/*!
 	 * \fn Action removeEntity(entity)
 	 * \memberof Room
-	 * \brief Returns an Action that removes an entity from a room.
+	 * \brief Returns an \c Action that removes an entity from a room.
 	 */
 	Room.removeEntity = function (entity) {
 		return new RemoveEntity(entity);
 	};
 
+	/*!
+	 * \fn void remove(entity)
+	 * \memberof Room
+	 * \brief Adds \p entity to this room.
+	 */
 	Room.prototype.add = function (entity) {
 		this.entities.push(entity);
 	};
 
+	/*!
+	 * \fn void remove(entity)
+	 * \memberof Room
+	 * \brief Removes \p entity from this room.
+	 */
 	Room.prototype.remove = function (entity) {
 		this.entities = this.entities.filter(function (otherEntity) { return entity !== otherEntity; });
 	};
 
+	/*!
+	 * \fn bool contains(entity | predicate)
+	 * \memberof Room
+	 * \brief Returns \c true if this room contains \p entity or \p predicate returns \c true for an entity in the room; \c false otherwise.
+	 */
 	Room.prototype.contains = function (predicate) {
 		if (typeof(predicate) === "function")
 			return this.entities.some(predicate);
@@ -63,6 +83,11 @@ var Room = (function () {
 			return this.entities.some(function (entity) { return entity === predicate; });
 	};
 
+	/*!
+	 * \fn void update()
+	 * \memberof Room
+	 * \brief Updates all entities in this room.
+	 */
 	Room.prototype.update = function () {
 		var updateActions = [];
 		this.entities.forEach(function (entity) {
