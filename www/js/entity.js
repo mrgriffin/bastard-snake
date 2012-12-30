@@ -37,11 +37,12 @@ var Entity = (function () {
 		 * \return the result of onUpdate.
 		 */
 		}, update: function () {
+			var actions = this.onUpdate();
 			if (this.vx !== undefined)
 				this.x += this.vx;
 			if (this.vy !== undefined)
 				this.y += this.vy;
-			return this.onUpdate();
+			return actions;
 		/*!
 		 * \fn Action onUpdate()
 		 * \memberof Entity
@@ -49,6 +50,13 @@ var Entity = (function () {
 		 * \return an \c Action or an array of \c Action.
 		 */
 		}, onUpdate: function () {
+		/*!
+		 * \fn Action onAdd()
+		 * \memberof Entity
+		 * \brief Called after this entity is added to a room.
+		 * \return an \c Action or an array of \c Action.
+		 */
+		}, onAdd: function () {
 		}
 	};
 
