@@ -14,6 +14,11 @@ var testDirection = {
 		this.assert(Direction.RIGHT.ccw() === Direction.UP, "RIGHT.ccw() !== UP");
 		this.assert(Direction.DOWN.ccw() === Direction.RIGHT, "DOWN.ccw() !== RIGHT");
 		this.assert(Direction.LEFT.ccw() === Direction.DOWN, "LEFT.ccw() !== DOWN");
+	}, testXY: function () {
+		this.assert(Direction.UP.x === 0 && Direction.UP.y === -1, "UP !== (0, -1)");
+		this.assert(Direction.RIGHT.x === 1 && Direction.RIGHT.y === 0, "RIGHT !== (1, 0)");
+		this.assert(Direction.DOWN.x === 0 && Direction.DOWN.y === 1, "DOWN !== (0, 1)");
+		this.assert(Direction.LEFT.x === -1 && Direction.LEFT.y === 0, "LEFT !== (-1, 0)");
 	}
 };
 
