@@ -90,6 +90,7 @@ var Room = (function () {
 	 */
 	Room.prototype.update = function () {
 		var updateActions = [];
+		// TODO: Introduce Entity.update that moves the entity.
 		this.entities.forEach(function (entity) {
 			var actions = entity.onUpdate();
 			if (actions !== undefined)
@@ -103,10 +104,10 @@ var Room = (function () {
 		for (var i = 0; i < this.entities.length; ++i) {
 			for (var j = i + 1; j < this.entities.length; ++j) {
 				if (this.entities[i].x === this.entities[j].x && this.entities[i].y === this.entities[j].y) {
-					var iAction = this.entities[i].onCollide(this.entities[j]);
+					var iAction = this.entities[i].collide(this.entities[j]);
 					if (iAction !== undefined)
 						collideActions = collideActions.concat(iAction);
-					var jAction = this.entities[j].onCollide(this.entities[i]);
+					var jAction = this.entities[j].collide(this.entities[i]);
 					if (jAction !== undefined)
 						collideActions = collideActions.concat(jAction);
 				}

@@ -10,17 +10,25 @@
 var Entity = (function () {
 	var prototype = {
 		/*!
-		 * \fn T onCollide(Entity that)
+		 * \fn T collide(Entity that)
 		 * \memberof Entity
-		 * \brief Executes the \c collisionHandler matching \p that's type.
+		 * \brief Executes the \c onCollide handler matching \p that's type.
 		 * \detail \p that must be of a type that has had \c Entity.mixin called on it.
 		 * \return the result of the executed handler or \c undefined if none matched.
 		 */
-		onCollide: function (that) {
-			if (this.collisionHandlers)
-				for (var i in this.collisionHandlers)
-					if (that.name === i)
-						return this.collisionHandlers[i].call(this, that);
+		collide: function (that) {
+			// TODO: Throw a TypeError if that is not an Entity (i.e. no name property).
+			for (var i in this.onCollide)
+				if (that.name === i)
+					return this.onCollide[i].call(this, that);
+		/*!
+		 * \property T (Entity)[] onCollide
+		 * \memberof Entity
+		 * \brief Associative-array of Entity class names to callbacks to execute when this entity collides with an entity of that type.
+		 * \detail the Entity class must have had \c Entity.mixin called on it.
+		 * \sa Entity.mixin
+		 */
+		}, onCollide: {
 		/*!
 		 * \fn void onUpdate()
 		 * \memberof Entity

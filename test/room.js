@@ -13,7 +13,7 @@ var testRoom = {
 		E0.prototype.onUpdate = function () {
 			this.updated = true;
 		};
-		E0.prototype.collisionHandlers = {
+		E0.prototype.onCollide = {
 			E0: function (that) {
 				self.assert(this.updated && that.updated, "onCollide before onUpdate");
 				self.assert(this.collision === undefined, "onCollide called twice");
