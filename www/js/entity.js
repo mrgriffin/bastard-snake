@@ -37,11 +37,12 @@ var Entity = (function () {
 		 * \return the result of onUpdate.
 		 */
 		}, update: function () {
+			var actions = this.onUpdate();
 			if (this.vx !== undefined)
 				this.x += this.vx;
 			if (this.vy !== undefined)
 				this.y += this.vy;
-			return this.onUpdate();
+			return actions;
 		/*!
 		 * \fn Action onUpdate()
 		 * \memberof Entity
