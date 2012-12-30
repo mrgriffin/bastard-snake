@@ -1,5 +1,20 @@
 var testRoom = {
-	testUpdate: function () {
+	testAdd: function () {
+		var room = new Room(1, 1);
+
+		function E0() { this.x = 0; this.y = 0; }
+		Entity.mixin(E0);
+		E0.prototype.onAdd = function () { return Room.addEntity(new E1()); };
+
+		function E1() { this.x = 0; this.y = 0; }
+		Entity.mixin(E1);
+
+		room.add(new E0());
+
+		this.assert(room.entities.length === 2, "entities.length !== 2");
+		this.assert(room.contains(function (e) { return e instanceof E0; }, "!contains(e instanceof E0)"));
+		this.assert(room.contains(function (e) { return e instanceof E1; }, "!contains(e instanceof E1)"));
+	}, testUpdate: function () {
 		var self = this;
 		var room = new Room(3, 1);
 
