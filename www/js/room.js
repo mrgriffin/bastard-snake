@@ -90,13 +90,10 @@ var Room = (function () {
 	 */
 	Room.prototype.update = function () {
 		var updateActions = [];
-		// TODO: Introduce Entity.update that moves the entity.
 		this.entities.forEach(function (entity) {
-			var actions = entity.onUpdate();
+			var actions = entity.update();
 			if (actions !== undefined)
 				updateActions = updateActions.concat(actions);
-			entity.x += entity.vx;
-			entity.y += entity.vy;
 		});
 		updateActions.forEach(function (action) { action.apply(this) }, this);
 

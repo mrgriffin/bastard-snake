@@ -1,5 +1,6 @@
 function E0() {}
 Entity.mixin(E0);
+E0.prototype.onUpdate = function () { this.updated = true; };
 
 function E1() {
 	this.hitE0 = false;
@@ -33,6 +34,10 @@ var testEntity = {
 		e1.collide(e1);
 		this.assert(e1.hitE0 === false, "e1.onCollide(E0)");
 		this.assert(e1.hitE1 === true, "!e1.onCollide(E1)");
+	}, testUpdate: function () {
+		var e0 = new E0();
+		e0.update();
+		this.assert(e0.updated === true, "!e0.updated");
 	}
 };
 

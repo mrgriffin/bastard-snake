@@ -10,7 +10,7 @@
 var Entity = (function () {
 	var prototype = {
 		/*!
-		 * \fn T collide(Entity that)
+		 * \fn Action collide(Entity that)
 		 * \memberof Entity
 		 * \brief Executes the \c onCollide handler matching \p that's type.
 		 * \detail \p that must be of a type that has had \c Entity.mixin called on it.
@@ -22,17 +22,31 @@ var Entity = (function () {
 				if (that.name === i)
 					return this.onCollide[i].call(this, that);
 		/*!
-		 * \property T (Entity)[] onCollide
+		 * \property Action (Entity)[] onCollide
 		 * \memberof Entity
 		 * \brief Associative-array of Entity class names to callbacks to execute when this entity collides with an entity of that type.
 		 * \detail the Entity class must have had \c Entity.mixin called on it.
+		 * \return an \c Action or an array of \c Action.
 		 * \sa Entity.mixin
 		 */
 		}, onCollide: {
 		/*!
-		 * \fn void onUpdate()
+		 * \fn Action update()
+		 * \memberof Entity
+		 * \brief Update this entity.
+		 * \return the result of onUpdate.
+		 */
+		}, update: function () {
+			if (this.vx !== undefined)
+				this.x += this.vx;
+			if (this.vy !== undefined)
+				this.y += this.vy;
+			return this.onUpdate();
+		/*!
+		 * \fn Action onUpdate()
 		 * \memberof Entity
 		 * \brief Called before this entity is updated.
+		 * \return an \c Action or an array of \c Action.
 		 */
 		}, onUpdate: function () {
 		}
@@ -45,7 +59,6 @@ var Entity = (function () {
 		 * \brief Sets \p klass to inherit from Entity.
 		 */
 		mixin: function (klass) {
-			klass.prototype = {};
 			klass.prototype.name = klass.name;
 			for (var property in prototype)
 				klass.prototype[property] = prototype[property];
