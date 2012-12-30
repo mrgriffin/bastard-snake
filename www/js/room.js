@@ -60,6 +60,11 @@ var Room = (function () {
 	 */
 	Room.prototype.add = function (entity) {
 		this.entities.push(entity);
+		var addActions = [];
+		var actions = entity.onAdd();
+		if (actions !== undefined)
+			addActions = addActions.concat(actions);
+		addActions.forEach(function (action) { action.apply(this) }, this);
 	};
 
 	/*!

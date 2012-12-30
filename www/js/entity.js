@@ -50,6 +50,13 @@ var Entity = (function () {
 		 * \return an \c Action or an array of \c Action.
 		 */
 		}, onUpdate: function () {
+		/*!
+		 * \fn Action onAdd()
+		 * \memberof Entity
+		 * \brief Called after this entity is added to a room.
+		 * \return an \c Action or an array of \c Action.
+		 */
+		}, onAdd: function () {
 		}
 	};
 
