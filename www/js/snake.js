@@ -32,9 +32,24 @@ Snake.prototype.onUpdate = function () {
 	this.vy = this.direction.y;
 };
 Snake.prototype.onCollide = {
-	Tail: function () {
+	Food: function () {
+		return Room.addEntity(this.grow());
+	}, Tail: function () {
 		this.crashed = true;
 	}
+};
+
+/*!
+ * \fn Tail grow()
+ * \memberof Snake
+ * \brief Grows this snake by one.
+ * \return The additional section of tail.
+ */
+Snake.prototype.grow = function () {
+	if (this.tail)
+		this.tail.grow();
+	else
+		return this.tail = new Tail(this.x, this.y, this, 1);
 };
 
 /*!
@@ -64,3 +79,5 @@ Tail.prototype.onUpdate = function () {
 	this.x = this.head.prevX;
 	this.y = this.head.prevY;
 };
+
+Tail.prototype.grow = Snake.prototype.grow;
