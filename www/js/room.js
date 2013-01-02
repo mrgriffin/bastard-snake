@@ -89,6 +89,38 @@ var Room = (function () {
 	};
 
 	/*!
+	 * \class Cell
+	 * \memberof Room
+	 * \brief Single cell in a room.
+	 * \sa getCells
+	 */
+	function Cell(x, y, entities) {
+		this.x = x;
+		this.y = y;
+		this.entities = entities;
+	}
+
+	/*!
+	 * \fn Cell[] getCells(predicate)
+	 * \memberof Room
+	 * \brief Returns all the cells for which \p predicate returns \c true.
+	 * \note Note that changes to the returned cells will not alter this room.
+	 */
+	Room.prototype.getCells = function (predicate) {
+		var cells = [];
+		for (var x = 0; x < this.width; ++x) {
+			for (var y = 0; y < this.height; ++y) {
+				var entities = [];
+				this.entities.forEach(function (entity) { if (entity.x == x && entity.y == y) entities.push(entity); });
+				var cell = new Cell(x, y, entities);
+				if (predicate(cell))
+					cells.push(cell);
+			}
+		}
+		return cells;
+	};
+
+	/*!
 	 * \fn void update()
 	 * \memberof Room
 	 * \brief Updates all entities in this room.
