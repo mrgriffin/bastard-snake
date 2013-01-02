@@ -44,3 +44,18 @@ Game.prototype.makeFood = function () {
 	var emptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 	return new Food(emptyCell.x, emptyCell.y);
 };
+
+/*!
+ * \fn void update()
+ * \memberof Game
+ * \brief Updates this game by one frame.
+ */
+Game.prototype.update = function () {
+	if (!this.snake.crashed) {
+		this.room.update();
+		if (!this.room.contains(food)) {
+			this.food = this.makeFood();
+			this.room.add(this.food);
+		}
+	}
+};
