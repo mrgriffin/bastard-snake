@@ -11,14 +11,20 @@
 <script src="js/keyboard-controller.js"></script>
 <script src="js/room.js"></script>
 <script src="js/snake.js"></script>
+<script src="js/touch-controller.js"></script>
 <script src="js/wall.js"></script>
 <script>
 (function (window, document) {
 document.addEventListener('DOMContentLoaded', function (e) {
+	var container = document.createElement('div');
+	container.style.display = 'inline-block';
+	document.body.appendChild(container);
+
 	var game = new Game();
-	var renderer = new CanvasRenderer();
-	// TODO: Not violate the Law of Demeter.
+	var renderer = new CanvasRenderer(container);
+	// TODO: Not violate the Law of Demeter when constructing these controllers.
 	new KeyboardController(game.snake);
+	new TouchController(game.snake, container);
 	var FPS = 3;
 	game.drawOn(renderer);
 	var updateInterval = window.setInterval(function () {

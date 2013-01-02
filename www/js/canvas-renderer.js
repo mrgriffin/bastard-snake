@@ -13,13 +13,12 @@
  * \memberof CanvasElement
  * \brief Constructs a new Renderer that uses the HTML5 \c canvas element.
  */
-function CanvasRenderer() {
+function CanvasRenderer(element) {
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = 16 * 9;
 	this.canvas.height = 16 * 9;
 	this.context = this.canvas.getContext('2d');
-	// TODO: Accept an element to make the canvas element a child of.
-	document.body.appendChild(this.canvas);
+	element.appendChild(this.canvas);
 }
 
 CanvasRenderer.prototype.begin = function () {
