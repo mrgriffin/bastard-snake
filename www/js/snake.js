@@ -36,6 +36,8 @@ Snake.prototype.onCollide = {
 		return Room.addEntity(this.grow());
 	}, Tail: function () {
 		this.crashed = true;
+	}, Wall: function () {
+		this.crashed = true;
 	}
 };
 

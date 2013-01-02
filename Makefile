@@ -1,6 +1,6 @@
 all :
 
-check : check-fixtures check-direction check-entity check-food check-room check-snake
+check : check-fixtures check-direction check-entity check-food check-room check-snake check-wall
 
 check-fixtures : test/unit-test.js test/fixtures.js
 	js $(^:%=-f %)
@@ -18,4 +18,7 @@ check-room : www/js/entity.js www/js/room.js test/unit-test.js test/room.js
 	js $(^:%=-f %)
 
 check-snake : www/js/direction.js www/js/entity.js www/js/room.js www/js/snake.js test/unit-test.js test/snake.js
+	js $(^:%=-f %)
+
+check-wall : www/js/direction.js www/js/entity.js www/js/room.js www/js/snake.js www/js/wall.js test/unit-test.js test/wall.js
 	js $(^:%=-f %)
