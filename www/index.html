@@ -8,6 +8,7 @@
 <script src="js/entity.js"></script>
 <script src="js/food.js"></script>
 <script src="js/game.js"></script>
+<script src="js/keyboard-controller.js"></script>
 <script src="js/room.js"></script>
 <script src="js/snake.js"></script>
 <script src="js/wall.js"></script>
@@ -16,6 +17,8 @@
 document.addEventListener('DOMContentLoaded', function (e) {
 	var game = new Game();
 	var renderer = new CanvasRenderer();
+	// TODO: Not violate the Law of Demeter.
+	new KeyboardController(game.snake);
 	var FPS = 3;
 	game.drawOn(renderer);
 	var updateInterval = window.setInterval(function () {
