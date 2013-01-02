@@ -49,6 +49,7 @@ Game.prototype.makeFood = function () {
  * \fn void update()
  * \memberof Game
  * \brief Updates this game by one frame.
+ * \return \c false if the game is over; \c true otherwise.
  */
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
@@ -58,4 +59,18 @@ Game.prototype.update = function () {
 			this.room.add(this.food);
 		}
 	}
+
+	return !this.snake.crashed;
+};
+
+/*!
+ * \fn void drawOn(renderer)
+ * \memberof Game
+ * \brief Draws this game state on \p renderer.
+ */
+Game.prototype.drawOn = function (renderer) {
+	renderer.begin();
+	// TODO: Add a drawOn method to room?
+	this.room.entities.forEach(function (entity) { renderer.draw(entity); });
+	renderer.end();
 };
