@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bastard Snake</title>
+<script src="js/canvas-renderer.js"></script>
+<script src="js/direction.js"></script>
+<script src="js/entity.js"></script>
+<script src="js/food.js"></script>
+<script src="js/game.js"></script>
+<script src="js/keyboard-controller.js"></script>
+<script src="js/room.js"></script>
+<script src="js/snake.js"></script>
+<script src="js/touch-controller.js"></script>
+<script src="js/wall.js"></script>
+<script>
+(function (window, document) {
+document.addEventListener('DOMContentLoaded', function (e) {
+	var container = document.createElement('div');
+	container.style.display = 'inline-block';
+	document.body.appendChild(container);
+
+	var game = new Game();
+	var renderer = new CanvasRenderer(container);
+	// TODO: Not violate the Law of Demeter when constructing these controllers.
+	new KeyboardController(game.snake);
+	new TouchController(game.snake, container);
+	var FPS = 3;
+	game.drawOn(renderer);
+	var updateInterval = window.setInterval(function () {
+		if (game.update()) {
+			game.drawOn(renderer);
+		} else {
+			window.clearInterval(updateInterval);
+		}
+	}, Math.floor(1000 / FPS));
+});
+}(window, document));
+</script>
+</head>
+<body>
+</body>
+</html>
