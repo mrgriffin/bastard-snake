@@ -14,6 +14,25 @@ var testRoom = {
 		this.assert(room.entities.length === 2, "entities.length !== 2");
 		this.assert(room.contains(function (e) { return e instanceof E0; }, "!contains(e instanceof E0)"));
 		this.assert(room.contains(function (e) { return e instanceof E1; }, "!contains(e instanceof E1)"));
+	}, testGetCells: function () {
+		var room = new Room(2, 1);
+
+		function E() { this.x = 0; this.y = 0; }
+		Entity.mixin(E);
+
+		var e = new E();
+		room.add(e);
+
+		var es = room.getCells(function (cell) { return cell.entities.some(function (entity) { return entity instanceof E; }); });
+		this.assert(es.length === 1 && es[0].x === e.x && es[0].y === e.y && es[0].entities[0] === e, "room.getCells(instanceof E) !== [ e ]");
+
+		var ns = room.getCells(function (cell) { return cell.entities.length === 0; });
+		this.assert(ns.length === 1 && ns[0].x === 1 && ns[0].y === 0, "room.getCells(entities.length === 0) !== []");
+
+		var all = room.getCells(function (cell) { return true; });
+		this.assert(all.length === 2, "room.getCells(true).length !== 2");
+		this.assert(all.some(function (cell) { return cell.x === 0 && cell.y === 0; }), "!room.getCells(true).contains({0,0})");
+		this.assert(all.some(function (cell) { return cell.x === 1 && cell.y === 0; }), "!room.getCells(true).contains({1,0})");
 	}, testUpdate: function () {
 		var self = this;
 		var room = new Room(3, 1);
