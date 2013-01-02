@@ -32,7 +32,7 @@ var testSnake = {
 
 		room.update();
 		room.update();
-		snake.direction = Direction.LEFT;
+		snake.newDirection = Direction.LEFT;
 		room.update();
 		this.assert(snake.crashed === true, "snake did not crash");
 	}

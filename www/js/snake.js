@@ -15,7 +15,7 @@
 function Snake(x, y, direction, length) {
 	this.x = this.prevX = x;
 	this.y = this.prevY = y;
-	this.direction = direction;
+	this.direction = this.newDirection = direction;
 	this.length = length;
 	if (length > 1)
 		this.tail = new Tail(x, y, this, length - 1);
@@ -28,6 +28,7 @@ Snake.prototype.onAdd = function () {
 Snake.prototype.onUpdate = function () {
 	this.prevX = this.x;
 	this.prevY = this.y;
+	this.direction = this.newDirection;
 	this.vx = this.direction.x;
 	this.vy = this.direction.y;
 };
@@ -49,7 +50,7 @@ Snake.prototype.onCollide = {
  */
 Snake.prototype.grow = function () {
 	if (this.tail)
-		this.tail.grow();
+		return this.tail.grow();
 	else
 		return this.tail = new Tail(this.x, this.y, this, 1);
 };
