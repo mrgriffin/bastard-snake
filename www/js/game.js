@@ -53,7 +53,7 @@ Game.prototype.makeFood = function () {
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
 		this.room.update();
-		if (!this.room.contains(food)) {
+		if (!this.room.contains(this.food)) {
 			this.food = this.makeFood();
 			this.room.add(this.food);
 		}
