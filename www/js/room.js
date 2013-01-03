@@ -30,7 +30,7 @@ var Room = (function () {
 	/*!
 	 * \fn Action addEntity(entity)
 	 * \memberof Room
-	 * \brief Returns an \c Action that adds an entity to a room.
+	 * \brief Returns an \c Action that adds \p entity to a room.
 	 */
 	Room.addEntity = function (entity) {
 		return new AddEntity(entity);
@@ -47,14 +47,14 @@ var Room = (function () {
 	/*!
 	 * \fn Action removeEntity(entity)
 	 * \memberof Room
-	 * \brief Returns an \c Action that removes an entity from a room.
+	 * \brief Returns an \c Action that removes \p entity from a room.
 	 */
 	Room.removeEntity = function (entity) {
 		return new RemoveEntity(entity);
 	};
 
 	/*!
-	 * \fn void remove(entity)
+	 * \fn void add(entity)
 	 * \memberof Room
 	 * \brief Adds \p entity to this room.
 	 */
@@ -65,6 +65,15 @@ var Room = (function () {
 		if (actions !== undefined)
 			addActions = addActions.concat(actions);
 		addActions.forEach(function (action) { action.apply(this) }, this);
+	};
+
+	/*!
+	 * \fn void addAll(entities)
+	 * \memberof Room
+	 * \brief Adds all the entities in \p entities to this room.
+	 */
+	Room.prototype.addAll = function (entities) {
+		entities.forEach(function (entity) { this.add(entity); }, this);
 	};
 
 	/*!
