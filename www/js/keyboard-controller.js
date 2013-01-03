@@ -5,11 +5,12 @@
 
 /*!
  * \class KeyboardController
+ * \implements Controller
  * \brief Controls a \c Snake via the keyboard.
  */
 function KeyboardController(snake) {
 	// TODO: Take the element to listen on as a parameter.
-	document.addEventListener('keydown', function (e) {
+	document.addEventListener('keydown', this.eventListener = function (e) {
 		var newDirection;
 
 		switch (e.keyCode) {
@@ -24,3 +25,7 @@ function KeyboardController(snake) {
 			snake.newDirection = newDirection;
 	});
 }
+
+KeyboardController.prototype.remove = function () {
+	document.removeEventListener('keydown', this.eventListener);
+};
