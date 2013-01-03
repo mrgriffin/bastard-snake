@@ -5,6 +5,7 @@
 
 /*!
  * \class Snake
+ * \implements Entity
  * \brief The head of a snake.
  */
 /*!
@@ -57,6 +58,7 @@ Snake.prototype.grow = function () {
 
 /*!
  * \class Tail
+ * \implements Entity
  * \brief Part of the tail of a snake.
  */
 /*!

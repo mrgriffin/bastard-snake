@@ -12,7 +12,7 @@ var Entity = (function () {
 		/*!
 		 * \fn Action collide(Entity that)
 		 * \memberof Entity
-		 * \brief Executes the \c onCollide handler matching \p that's type.
+		 * \brief Executes the \c onCollide handler matching \p that's type; or the else handler if none matched.
 		 * \detail \p that must be of a type that has had \c Entity.mixin called on it.
 		 * \return the result of the executed handler or \c undefined if none matched.
 		 */
@@ -21,6 +21,8 @@ var Entity = (function () {
 			for (var i in this.onCollide)
 				if (that.name === i)
 					return this.onCollide[i].call(this, that);
+			if ('else' in this.onCollide)
+				return this.onCollide['else'].call(this, that);
 		/*!
 		 * \property Action (Entity)[] onCollide
 		 * \memberof Entity
@@ -60,16 +62,36 @@ var Entity = (function () {
 		}
 	};
 
+	function MoveAction(entity, x, y) {
+		this.entity = entity;
+		this.x = x;
+		this.y = y;
+	}
+
+	MoveAction.prototype.apply = function () {
+		this.entity.x = this.x;
+		this.entity.y = this.y;
+	};
+
 	return {
 		/*!
 		 * \fn void mixin(Function klass)
 		 * \memberof Entity
 		 * \brief Sets \p klass to inherit from Entity.
+		 * \warning the name 'else' is reserved.
 		 */
 		mixin: function (klass) {
 			klass.prototype.name = klass.name;
 			for (var property in prototype)
 				klass.prototype[property] = prototype[property];
+		/*!
+		 * \fn Action move(Entity entity, int x, int y)
+		 * \memberof Entity
+		 * \brief Returns an \c Action that moves \p entity to \p x, \p y.
+		 */
+		}, move: function (entity, x, y) {
+			return new MoveAction(entity, x, y);
 		}
+		
 	};
 }());

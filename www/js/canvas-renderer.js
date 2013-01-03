@@ -24,6 +24,7 @@ function CanvasRenderer(element) {
 CanvasRenderer.prototype.begin = function () {
 	// HINT: Resets the canvas element.
 	this.canvas.width = this.canvas.width;
+	this.portals = 0;
 };
 
 CanvasRenderer.prototype.end = function () {};
@@ -40,6 +41,11 @@ CanvasRenderer.prototype.drawEntity = {
 	Food: function (food) {
 		this.context.fillStyle = '#ff0000';
 		this.context.fillRect(food.x * 16 + 1, food.y * 16 + 1, 14, 14);
+	}, Portal: function (portal) {
+		this.context.fillStyle = [ '#7f7fff', '#ff7f00' ][this.portals++ % 2];
+		this.context.beginPath();
+		this.context.arc(portal.x * 16 + 8, portal.y * 16 + 8, 7, 0, 2 * Math.PI, false);
+		this.context.fill();
 	}, Snake: function (snake) {
 		this.context.fillStyle = '#00ff00';
 		this.context.fillRect(snake.x * 16 + 1, snake.y * 16 + 1, 14, 14);

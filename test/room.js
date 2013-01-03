@@ -14,6 +14,19 @@ var testRoom = {
 		this.assert(room.entities.length === 2, "entities.length !== 2");
 		this.assert(room.contains(function (e) { return e instanceof E0; }, "!contains(e instanceof E0)"));
 		this.assert(room.contains(function (e) { return e instanceof E1; }, "!contains(e instanceof E1)"));
+	}, testAddAll: function () {
+		var room = new Room(1, 1);
+
+		function E() { this.x = 0; this.y = 0; }
+		Entity.mixin(E);
+
+		var e1 = new E(), e2 = new E();
+
+		room.addAll([ e1, e2 ]);
+
+		this.assert(room.entities.length === 2, "entities.length !== 2");
+		this.assert(room.contains(e1), "!contains(e1)");
+		this.assert(room.contains(e2), "!contains(e2)");
 	}, testGetCells: function () {
 		var room = new Room(2, 1);
 

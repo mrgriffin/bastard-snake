@@ -5,6 +5,7 @@
 
 /*!
  * \class Wall
+ * \implements Entity
  * \brief  Wall that prevents other entities from moving into a space.
  */
 /*!
