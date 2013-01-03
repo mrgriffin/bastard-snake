@@ -30,9 +30,21 @@ function Game() {
 		this.room.add(new Wall(width - 1, y));
 	}
 
+	this.room.addAll(this.makePortals());
+
 	this.food = this.makeFood();
 	this.room.add(this.food);
 }
+
+/*!
+ * \fn Cell getEmptyCell()
+ * \memberof Game
+ * \brief Returns a random empty cell.
+ */
+Game.prototype.getEmptyCell = function () {
+	var emptyCells = this.room.getCells(function (cell) { return cell.entities.length === 0; });
+	return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+};
 
 /*!
  * \fn Food makeFood()
@@ -40,9 +52,19 @@ function Game() {
  * \brief Returns a new Food object in an empty cell.
  */
 Game.prototype.makeFood = function () {
-	var emptyCells = this.room.getCells(function (cell) { return cell.entities.length === 0; });
-	var emptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+	var emptyCell = this.getEmptyCell();
 	return new Food(emptyCell.x, emptyCell.y);
+};
+
+/*!
+ * \fn Portal[] makePortals()
+ * \memberof Game
+ * \brief Returns an array of new Portal objects in empty cells.
+ */
+Game.prototype.makePortals = function () {
+	var emptyCell1 = this.getEmptyCell();
+	var emptyCell2 = this.getEmptyCell();
+	return Portal.makePortals(emptyCell1.x, emptyCell1.y, emptyCell2.x, emptyCell2.y);
 };
 
 /*!

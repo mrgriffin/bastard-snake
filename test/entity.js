@@ -34,6 +34,12 @@ var testEntity = {
 		e1.collide(e1);
 		this.assert(e1.hitE0 === false, "e1.onCollide(E0)");
 		this.assert(e1.hitE1 === true, "!e1.onCollide(E1)");
+	}, testCollideElse: function () {
+		var e0 = new E0();
+		e0.onCollide = { else: function (that) { this.hitElse = true; } };
+
+		e0.collide(e0);
+		this.assert(e0.hitElse === true, "!e0.hitElse");
 	}, testUpdate: function () {
 		var e0 = new E0();
 		e0.update();

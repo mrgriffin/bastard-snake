@@ -5,6 +5,7 @@
 
 /*!
  * \class Food
+ * \implements Entity
  * \brief Food that causes a Snake to grow when eaten.
  */
 /*!
