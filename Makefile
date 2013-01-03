@@ -1,6 +1,14 @@
 all :
 
-check : check-fixtures check-direction check-entity check-food check-game check-portal check-room check-snake check-wall
+check : check-makefile check-index check-fixtures check-direction check-entity check-food check-game check-room check-snake check-wall
+
+# Check that this makefile references all the test files in test.
+check-makefile : test/*.js
+	$(patsubst %,grep Makefile -qe "%";,$^)
+
+# Check that index.html references all the javascript files in www/js.
+check-index : www/js/*.js
+	$(patsubst www/%,grep www/index.html -qe "%";,$^)
 
 check-fixtures : test/unit-test.js test/fixtures.js
 	js $(^:%=-f %)
@@ -16,8 +24,6 @@ check-food : www/js/direction.js www/js/entity.js www/js/food.js www/js/room.js 
 
 check-game : www/js/direction.js www/js/entity.js www/js/food.js www/js/game.js www/js/room.js www/js/snake.js www/js/wall.js test/unit-test.js test/game.js
 	js $(^:%=-f %)
-
-check-portal : www/js/entity.js www/js/portal.js www/js/room.js test/unit-test.js test/portal.js
 
 check-room : www/js/entity.js www/js/room.js test/unit-test.js test/room.js
 	js $(^:%=-f %)
