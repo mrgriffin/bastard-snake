@@ -1,11 +1,19 @@
 all :
 
-check : check-fixtures check-canvas-renderer check-direction check-entity check-food check-game check-portal check-room check-snake check-wall
+check : check-makefile check-index check-fixtures check-canvas-renderer check-direction check-entity check-food check-game check-portal check-room check-snake check-wall
+
+# Check that this makefile references all the test files in test.
+check-makefile : test/*.js
+	$(patsubst %,grep Makefile -qe "%";,$^)
+
+# Check that index.html references all the javascript files in www/js.
+check-index : www/js/*.js
+	$(patsubst www/%,grep www/index.html -qe "%";,$^)
 
 check-fixtures : test/unit-test.js test/fixtures.js
 	js $(^:%=-f %)
 
-# Check that CanvasRenderer handle each subclass of Entity.
+# Check that CanvasRenderer handles each subclass of Entity.
 check-canvas-renderer : www/js/*.js
 	for E in `sed -nre 's/.*Entity.mixin\((.*)\).*/\1/p' $^`; do grep www/js/canvas-renderer.js -qe "$$E"; done
 
