@@ -1,3 +1,32 @@
+/*!
+ * \file action.js
+ * \brief Concept for game state altering actions.
+ */
+
+/*!
+ * \class Action
+ * \brief Concept that allows event handlers on an \c Entity to interact with the game state.
+ * \sa Entity::MoveAction
+ * \sa Room::AddEntityAction
+ * \sa Room::RemoveEntityAction
+ */
+/*!
+ * \fn void Action::apply(Room room)
+ * \memberof Action
+ * \protected
+ * \brief Applies this action to \p room.
+ */
+/*!
+ * \overload void Action::apply()
+ */
 var Action = {
-	isAction: function (object) { return true; }
+	/*!
+	 * \fn bool Action::isAction(Object object)
+	 * \memberof Action
+	 * \public
+	 * \brief Returns true if \p object is an \c Action.
+	 */
+	isAction: function (object) {
+		return 'apply' in object;
+	}
 };
