@@ -107,12 +107,12 @@ var Entity = (function () {
 	};
 
 	/*!
-	 * \class MoveAction
+	 * \class Entity::MoveAction
 	 * \implements Action
 	 * \brief Moves an \c Entity to an x, y position.
 	 */
 	/*!
-	 * \fn MoveAction::MoveAction(Entity entity, int x, int y)
+	 * \fn Entity::MoveAction::MoveAction(Entity entity, int x, int y)
 	 * \memberof MoveAction
 	 * \private
 	 * \brief Constructs an action that moves \p entity to \p x, \p y.
@@ -124,7 +124,7 @@ var Entity = (function () {
 	}
 
 	/*!
-	 * \fn void MoveAction::apply()
+	 * \fn void Entity::MoveAction::apply()
 	 * \memberof MoveAction
 	 * \private
 	 * \brief Moves the entity.
