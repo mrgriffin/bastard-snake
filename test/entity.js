@@ -82,7 +82,7 @@ var testEntity = {
 
 		var a = new EntityA();
 		a.update();
-		this.assert(a.updated, "!a.updated");
+		this.assert(a.updated, "a.updated");
 		//! [update]
 	}
 };
