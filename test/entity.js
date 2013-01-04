@@ -23,10 +23,10 @@ var testEntity = {
 			EntityA: function (a) {
 				this.hitA = true;
 				a.hitByA = true;
-				// TODO: Show an action!!!
 			}, EntityB: function (b) {
 				this.hitB = true;
 				b.hitByA = true;
+				return new Entity.MoveAction(this, 1, 1);
 			}
 		};
 
@@ -44,9 +44,14 @@ var testEntity = {
 
 		a1 = new EntityA();
 		b1 = new EntityB();
-		a1.collide(b1);
+
+		// HINT: These two steps are performed by Room::update().
+		var actions = [].concat(a1.collide(b1));
+		actions.forEach(function (action) { action.apply(); });
+
 		this.assert(a1.hitB && b1.hitByA, "a1.hitB && b1.hitByA");
 		this.assert(!a1.hitA && !b1.hitByB, "!a1.hitA && !b1.hitByB");
+		this.assert(a1.x === 1 && a1.y === 1, "a1.{x,y} != {1,1}");
 		//! [collide]
 
 		b1 = new EntityB();

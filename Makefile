@@ -24,7 +24,7 @@ check-canvas-renderer : www/js/*.js
 check-direction : www/js/direction.js test/unit-test.js test/direction.js
 	js $(^:%=-f %)
 
-check-entity : www/js/entity.js test/unit-test.js test/entity.js
+check-entity : www/js/action.js www/js/entity.js test/unit-test.js test/entity.js
 	js $(^:%=-f %)
 
 check-food : www/js/action.js www/js/direction.js www/js/entity.js www/js/food.js www/js/room.js www/js/snake.js test/unit-test.js test/food.js
