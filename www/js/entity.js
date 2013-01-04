@@ -113,8 +113,8 @@ var Entity = (function () {
 	 */
 	/*!
 	 * \fn Entity::MoveAction::MoveAction(Entity entity, int x, int y)
-	 * \memberof MoveAction
-	 * \private
+	 * \memberof Entity::MoveAction
+	 * \public
 	 * \brief Constructs an action that moves \p entity to \p x, \p y.
 	 */
 	function MoveAction(entity, x, y) {
@@ -125,8 +125,8 @@ var Entity = (function () {
 
 	/*!
 	 * \fn void Entity::MoveAction::apply()
-	 * \memberof MoveAction
-	 * \private
+	 * \memberof Entity::MoveAction
+	 * \protected
 	 * \brief Moves the entity.
 	 */
 	MoveAction.prototype.apply = function () {
