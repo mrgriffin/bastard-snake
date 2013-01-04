@@ -24,7 +24,7 @@ function Snake(x, y, direction, length) {
 Entity.mixin(Snake);
 Snake.prototype.onAdd = function () {
 	if (this.tail)
-		return Room.addEntity(this.tail);
+		return new Room.AddEntityAction(this.tail);
 }
 Snake.prototype.onUpdate = function () {
 	this.prevX = this.x;
@@ -35,7 +35,7 @@ Snake.prototype.onUpdate = function () {
 };
 Snake.prototype.onCollide = {
 	Food: function () {
-		return Room.addEntity(this.grow());
+		return new Room.AddEntityAction(this.grow());
 	}, Tail: function () {
 		this.crashed = true;
 	}, Wall: function () {
@@ -76,7 +76,7 @@ function Tail(x, y, head, length) {
 Entity.mixin(Tail);
 Tail.prototype.onAdd = function () {
 	if (this.tail)
-		return Room.addEntity(this.tail);
+		return new Room.AddEntityAction(this.tail);
 }
 Tail.prototype.onUpdate = function () {
 	this.prevX = this.x;

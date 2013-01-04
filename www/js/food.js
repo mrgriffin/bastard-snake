@@ -20,6 +20,6 @@ function Food(x, y) {
 Entity.mixin(Food);
 Food.prototype.onCollide = {
 	Snake: function (snake) {
-		return Room.removeEntity(this);
+		return new Room.RemoveEntityAction(this);
 	}
 };

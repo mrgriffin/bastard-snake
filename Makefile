@@ -30,7 +30,7 @@ check-entity : www/js/action.js www/js/entity.js test/unit-test.js test/entity.j
 check-food : www/js/action.js www/js/direction.js www/js/entity.js www/js/food.js www/js/room.js www/js/snake.js test/unit-test.js test/food.js
 	js $(^:%=-f %)
 
-check-game : www/js/direction.js www/js/entity.js www/js/food.js www/js/game.js www/js/portal.js www/js/room.js www/js/snake.js www/js/wall.js test/unit-test.js test/game.js
+check-game : www/js/action.js www/js/direction.js www/js/entity.js www/js/food.js www/js/game.js www/js/portal.js www/js/room.js www/js/snake.js www/js/wall.js test/unit-test.js test/game.js
 	js $(^:%=-f %)
 
 check-portal : www/js/action.js www/js/entity.js www/js/portal.js www/js/room.js test/unit-test.js test/portal.js
@@ -39,7 +39,7 @@ check-portal : www/js/action.js www/js/entity.js www/js/portal.js www/js/room.js
 check-room : www/js/action.js www/js/entity.js www/js/room.js test/unit-test.js test/room.js
 	js $(^:%=-f %)
 
-check-snake : www/js/direction.js www/js/entity.js www/js/room.js www/js/snake.js test/unit-test.js test/snake.js
+check-snake : www/js/action.js www/js/direction.js www/js/entity.js www/js/room.js www/js/snake.js test/unit-test.js test/snake.js
 	js $(^:%=-f %)
 
 check-wall : www/js/direction.js www/js/entity.js www/js/room.js www/js/snake.js www/js/wall.js test/unit-test.js test/wall.js

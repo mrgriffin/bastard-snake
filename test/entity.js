@@ -45,7 +45,7 @@ var testEntity = {
 		a1 = new EntityA();
 		b1 = new EntityB();
 
-		// HINT: These two steps are performed by Room::update().
+		// HINT: These two steps are performed by Game::update().
 		var actions = [].concat(a1.collide(b1));
 		actions.forEach(function (action) { action.apply(); });
 

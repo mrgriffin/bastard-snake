@@ -16,7 +16,7 @@
  */
 var Entity = (function () {
 	/*!
-	 * \fn T Entity::assertAction(T action)
+	 * \fn T Entity::assertAction(T action, String method)
 	 * \memberof Entity
 	 * \private
 	 * \brief Returns action if is of type \c Action, \c Action[] or \c undefined; throws \c TypeError otherwise.
