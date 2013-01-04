@@ -8,4 +8,4 @@ var testGame = {
 	}
 };
 
-TestRunner.runAll(testGame, print);
+quit(!TestRunner.runAll(testGame, print));

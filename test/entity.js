@@ -1,50 +1,85 @@
-function E0() {}
-Entity.mixin(E0);
-E0.prototype.onUpdate = function () { this.updated = true; };
-
-function E1() {
-	this.hitE0 = false;
-	this.hitE1 = false;
-}
-Entity.mixin(E1);
-E1.prototype.onCollide = {
-	E0: function () { this.hitE0 = true; },
-	E1: function () { this.hitE1 = true; },
-};
-
 var testEntity = {
-	testCollide: function () {
-		var self = this;
+	testMixin: function () {
+		//! [mixin]
+		function EntityA() {
+		}
+		Entity.mixin(EntityA);
 
-		var hitE0 = false;
-		var e0 = new E0();
-		e0.onCollide = {
-			E0: function () { hitE0 = true; },
-			E1: function () { self.assert(false, "e0.onCollide(E1)"); }
+		EntityA.prototype.onCollide = {
+			EntityA: function (a) {
+				// ...
+			}
 		};
-		e0.collide(e0);
-		this.assert(hitE0 === true, "!e0.onCollide(E0)");
+		//! [mixin]
+	}, testCollide: function () {
+		function EntityA() {}
+		Entity.mixin(EntityA);
 
-		var e1 = new E1();
-		e1.collide(e0);
-		this.assert(e1.hitE0 === true, "!e1.onCollide(E0)");
-		this.assert(e1.hitE1 === false, "e1.onCollide(E1)");
+		function EntityB() {}
+		Entity.mixin(EntityB);
 
-		e1 = new E1();
-		e1.collide(e1);
-		this.assert(e1.hitE0 === false, "e1.onCollide(E0)");
-		this.assert(e1.hitE1 === true, "!e1.onCollide(E1)");
-	}, testCollideElse: function () {
-		var e0 = new E0();
-		e0.onCollide = { else: function (that) { this.hitElse = true; } };
+		//! [collide]
+		EntityA.prototype.onCollide = {
+			EntityA: function (a) {
+				this.hitA = true;
+				a.hitByA = true;
+				// TODO: Show an action!!!
+			}, EntityB: function (b) {
+				this.hitB = true;
+				b.hitByA = true;
+			}
+		};
 
-		e0.collide(e0);
-		this.assert(e0.hitElse === true, "!e0.hitElse");
+		EntityB.prototype.onCollide = {
+			EntityA: function (a) {
+				this.hitA = true;
+				a.hitByB = true;
+			}, else: function(e) {
+				this.hitElse = true;
+				e.hitByB = true;
+			}
+		};
+
+		var a1, a2, b1, b2;
+
+		a1 = new EntityA();
+		b1 = new EntityB();
+		a1.collide(b1);
+		this.assert(a1.hitB && b1.hitByA, "a1.hitB && b1.hitByA");
+		this.assert(!a1.hitA && !b1.hitByB, "!a1.hitA && !b1.hitByB");
+		//! [collide]
+
+		b1 = new EntityB();
+		a1 = new EntityA();
+		b1.collide(a1);
+		this.assert(b1.hitA && a1.hitByB, "b1.hitA && a1.hitByB");
+		this.assert(!b1.hitElse && !a1.hitByA, "!b1.hitElse && !a1.hitByA");
+
+		a1 = new EntityA();
+		a2 = new EntityA();
+		a1.collide(a2);
+		this.assert(a1.hitA && a2.hitByA, "a1.hitA && a2.hitByA");
+		this.assert(!a1.hitB && !a2.hitByB, "!a1.hitB && !a2.hitByB");
+
+		b1 = new EntityB();
+		b2 = new EntityB();
+		b1.collide(b2);
+		this.assert(b1.hitElse && b2.hitByB, "b1.hitElse && b2.hitByB");
+		this.assert(!b1.hitA && !b2.hitByA, "!b1.hitA && !b2.hitByA");
 	}, testUpdate: function () {
-		var e0 = new E0();
-		e0.update();
-		this.assert(e0.updated === true, "!e0.updated");
+		function EntityA() {}
+		Entity.mixin(EntityA);
+
+		//! [update]
+		EntityA.prototype.onUpdate = function () {
+			this.updated = true;
+		};
+
+		var a = new EntityA();
+		a.update();
+		this.assert(a.updated, "!a.updated");
+		//! [update]
 	}
 };
 
-TestRunner.runAll(testEntity, print);
+quit(!TestRunner.runAll(testEntity, print));

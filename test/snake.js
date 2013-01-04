@@ -38,4 +38,4 @@ var testSnake = {
 	}
 };
 
-TestRunner.runAll(testSnake, print);
+quit(!TestRunner.runAll(testSnake, print));

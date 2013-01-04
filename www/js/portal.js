@@ -16,7 +16,7 @@ var Portal = (function () {
 	Entity.mixin(Portal);
 	Portal.prototype.onCollide = {
 		else: function (that) {
-			return Entity.move(that, this.pair.x, this.pair.y);
+			return new Entity.MoveAction(that, this.pair.x, this.pair.y);
 		}
 	};	
 

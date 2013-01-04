@@ -2,18 +2,20 @@ var testRoom = {
 	testAdd: function () {
 		var room = new Room(1, 1);
 
-		function E0() { this.x = 0; this.y = 0; }
-		Entity.mixin(E0);
-		E0.prototype.onAdd = function () { return Room.addEntity(new E1()); };
+		function EntityA() { this.x = 0; this.y = 0; }
+		Entity.mixin(EntityA);
 
-		function E1() { this.x = 0; this.y = 0; }
-		Entity.mixin(E1);
+		function EntityB() { this.x = 0; this.y = 0; }
+		Entity.mixin(EntityB);
+		// [add]
+		EntityA.prototype.onAdd = function () { return Room.addEntity(new EntityB()); };
 
-		room.add(new E0());
+		room.add(new EntityA());
 
 		this.assert(room.entities.length === 2, "entities.length !== 2");
-		this.assert(room.contains(function (e) { return e instanceof E0; }, "!contains(e instanceof E0)"));
-		this.assert(room.contains(function (e) { return e instanceof E1; }, "!contains(e instanceof E1)"));
+		this.assert(room.contains(function (e) { return e instanceof EntityA; }, "!contains(e instanceof EntityA)"));
+		this.assert(room.contains(function (e) { return e instanceof EntityB; }, "!contains(e instanceof EntityB)"));
+		// [add]
 	}, testAddAll: function () {
 		var room = new Room(1, 1);
 
@@ -93,4 +95,4 @@ var testRoom = {
 	}
 };
 
-TestRunner.runAll(testRoom, print);
+quit(!TestRunner.runAll(testRoom, print));
