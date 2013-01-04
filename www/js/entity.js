@@ -104,6 +104,36 @@ var Entity = (function () {
 		 */
 		}, onAdd: function () {
 		}
+		/*!
+		 * \property int Entity::x
+		 * \memberof Entity
+		 * \protected
+		 * \brief The X coordinate of this entity.
+		 * \detail Should be defined by a class that mixes \c Entity.
+		 */
+		/*!
+		 * \property int Entity::y
+		 * \memberof Entity
+		 * \protected
+		 * \brief The Y coordinate of this entity.
+		 * \detail Should be defined by a class that mixes \c Entity.
+		 */
+		/*!
+		 * \property int Entity::vx
+		 * \memberof Entity
+		 * \protected
+		 * \brief The X velocity of this entity.
+		 * \detail May be defined by a class that mixes \c Entity; if defined \c update will increase \c x by \c vx.
+		 * \sa Entity::update
+		 */
+		/*!
+		 * \property int Entity::vy
+		 * \memberof Entity
+		 * \protected
+		 * \brief The Y velocity of this entity.
+		 * \detail May be defined by a class that mixes \c Entity; if defined \c update will increase \c y by \c vy.
+		 * \sa Entity::update
+		 */
 	};
 
 	/*!
