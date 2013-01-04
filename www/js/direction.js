@@ -16,8 +16,9 @@ var Direction = (function () {
 	var directions = [ new Direction(0, -1), new Direction(1, 0), new Direction(0, 1), new Direction(-1, 0) ];
 
 	/*!
-	 * \fn Direction cw()
+	 * \fn Direction Direction::cw()
 	 * \memberof Direction
+	 * \public
 	 * \brief Returns the direction clockwise of this direction.
 	 */
 	Direction.prototype.cw = function () {
@@ -25,8 +26,9 @@ var Direction = (function () {
 	};
 
 	/*!
-	 * \fn Direction ccw()
+	 * \fn Direction Direction::ccw()
 	 * \memberof Direction
+	 * \public
 	 * \brief Returns the direction counterclockwise of this direction.
 	 */
 	Direction.prototype.ccw = function () {
