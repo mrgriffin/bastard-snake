@@ -1,5 +1,9 @@
 all :
 
+.PHONY : push
+push : check
+	scp -r www/* mgriffin_mgriffin@ssh.phx.nearlyfreespeech.net:/home/public/bastard-snake
+
 check : check-makefile check-index check-fixtures check-canvas-renderer check-direction check-entity check-food check-game check-portal check-room check-snake check-wall
 
 # Check that this makefile references all the test files in test.

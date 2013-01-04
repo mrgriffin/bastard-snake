@@ -18,9 +18,11 @@
 (function (window, document) {
 document.addEventListener('DOMContentLoaded', function (e) {
 	var container = document.createElement('div');
-	container.style.display = 'block';
+	container.style.display = 'inline-block';
 	document.body.appendChild(container);
-	document.body.appendChild(document.createTextNode("Tap or press a key to (re-)start."));
+	var instructions = document.createElement('p');
+	instructions.appendChild(document.createTextNode("Tap or press a key to (re-)start."));
+	document.body.appendChild(instructions);
 
 	var renderer = new CanvasRenderer(container);
 	var FPS = 3;
@@ -30,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	new Game().drawOn(renderer);
 
 	window.addEventListener('mouseup', function () { if (gameover) newGame(); });
+	window.addEventListener('touchend', function () { if (gameover) newGame(); });
 	// TODO: Do not trigger if the user presses a modifier key.
 	window.addEventListener('keydown', function () { if (gameover) newGame(); });
 
