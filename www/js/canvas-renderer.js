@@ -43,10 +43,18 @@ function CanvasRenderer(element) {
 	/*!
 	 * \property HTMLImageElement CanvasRenderer::snakeBody
 	 * \private
-	 * \brief The image used to render the body (non-head, non-tail) segments of a snake.
+	 * \brief The image used to render the straight body (non-head, non-tail) segments of a snake.
 	 */
 	this.snakeBody = document.createElement('img');
 	this.snakeBody.setAttribute('src', 'img/snake-body.png');
+
+	/*!
+	 * \property HTMLImageElement CanvasRenderer::snakeBend
+	 * \private
+	 * \brief The image used to render the corner body (non-head, non-tail) segments of a snake.
+	 */
+	this.snakeBend = document.createElement('img');
+	this.snakeBend.setAttribute('src', 'img/snake-bend.png');
 
 	/*!
 	 * \property HTMLImageElement CanvasRenderer::snakeTail
@@ -67,16 +75,16 @@ CanvasRenderer.prototype.begin = function () {
 	this.canvas.width = this.canvas.width;
 
 	/*!
-	 * \property int CanvasRenderer::portals
+	 * \property Portal[] CanvasRenderer::portals
 	 * \private
-	 * \brief Count of portals drawn so far this frame.
+	 * \brief Portals drawn so far this frame.
 	 */
-	this.portals = 0;
+	this.portals = [];
 
 	/*!
 	 * \property (Snake | Tail)[][] CanvasRenderer::snakes
 	 * \private
-	 * \brief Array of the snakes to render this frame.
+	 * \brief Snakes to draw this frame.
 	 */
 	this.snakes = [];
 };
@@ -113,20 +121,76 @@ CanvasRenderer.prototype.end = function () {
 			return Direction.LEFT;
 	}
 
+	function angleBetween(to, via, from) {
+		var dxt = to.x - via.x, dyt = to.y - via.y;
+		var dxf = via.x - from.x, dyf = via.y - from.y;
+
+		if ((dxt === 1 && dyf === -1) || (dyt === 1 && dxf === -1))
+			return 0;
+		else if ((dxt === -1 && dyf === -1) || (dyt === 1 && dxf === 1))
+			return Math.PI * 0.5;
+		else if ((dyt === -1 && dxf === 1) || (dxt === -1 && dyf === 1))
+			return Math.PI;
+		else if ((dyt === -1 && dxf === -1) || (dxt === 1 && dyf === 1))
+			return Math.PI * 1.5;
+	}
+
 	// Draw the snakes.
 	this.snakes.forEach(function (snake) {
 		// Draw the head.
-		drawScaledRotated(this.context, this.snakeHead, snake[0].x * 24, snake[0].y * 24, 1, 1, snake[0].direction.cwRadians());
+		drawScaledRotated(this.context,
+			          this.snakeHead,
+			          snake[0].x * 24,
+			          snake[0].y * 24,
+			          1,
+			          1,
+			          snake[0].direction.cwRadians());
+
+		var lastSegment = snake[0];
+		var tailSegment = snake[snake.length - 1];
 
 		// Draw the body segments.
 		for (var i = 1; i < snake.length - 1; ++i) {
-			if (parallel(snake[i - 1], snake[i], snake[i + 1]))
-				drawScaledRotated(this.context, this.snakeBody, snake[i].x * 24, snake[i].y * 24, 1, i % 2 ? 1 : -1, directionBetween(snake[i - 1], snake[i + 1]).cwRadians());
+			// Skip segments that overlap the previous segment.
+			if (snake[i].x === snake[i - 1].x && snake[i].y === snake[i - 1].y)
+				continue;
+
+			// Skip segments that overlap the tail.
+			if (snake[i].x === tailSegment.x && snake[i].y === tailSegment.y)
+				continue;
+
+			if (parallel(snake[i - 1], snake[i], snake[i + 1])) {
+				drawScaledRotated(this.context,
+				                  this.snakeBody,
+				                  snake[i].x * 24,
+				                  snake[i].y * 24,
+				                  i % 2 && snake[i + 1].y !== snake[i - 1].y ? 1 : -1,
+				                  i % 2 && snake[i + 1].x !== snake[i - 1].x ? 1 : -1,
+				                  directionBetween(snake[i - 1], snake[i + 1]).cwRadians());
+			} else {
+				drawScaledRotated(this.context,
+				                  this.snakeBend,
+				                  snake[i].x * 24,
+				                  snake[i].y * 24,
+				                  // TODO: Should we be flipping the image under some circumstances?
+				                  1,
+				                  1,
+				                  angleBetween(snake[i - 1], snake[i], snake[i + 1]));
+			}
+
+			lastSegment = snake[i];
 		}
 
 		// Draw the tail.
-		if (snake.length > 1)
-			drawScaledRotated(this.context, this.snakeTail, snake[snake.length - 1].x * 24, snake[snake.length - 1].y * 24, 1, 1, directionBetween(snake[snake.length - 2], snake[snake.length - 1]).cwRadians());
+		if (snake.length > 1) {
+			drawScaledRotated(this.context,
+			                  this.snakeTail,
+			                  tailSegment.x * 24,
+			                  tailSegment.y * 24,
+			                  1,
+			                  1,
+			                  directionBetween(lastSegment, snake[snake.length - 1]).cwRadians());
+		}
 	}, this);
 };
 
@@ -161,10 +225,11 @@ CanvasRenderer.prototype.drawEntity = {
 	 * \detail Portals are drawn as alternating blue and orange circles.
 	 */
 	}, Portal: function (portal) {
-		this.context.fillStyle = [ '#7f7fff', '#ff7f00' ][this.portals++ % 2];
+		this.context.fillStyle = [ '#7f7fff', '#ff7f00' ][this.portals.length % 2];
 		this.context.beginPath();
 		this.context.arc(portal.x * 24 + 12, portal.y * 24 + 12, 11, 0, 2 * Math.PI, false);
 		this.context.fill();
+		this.portals.push(portal);
 	/*!
 	 * \fn void CanvasRenderer::draw(Snake snake)
 	 * \private
