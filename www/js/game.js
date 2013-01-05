@@ -15,11 +15,32 @@
  */
 function Game() {
 	/*!
+	 * \property int Game::width
+	 * \private
+	 * \brief The maximum width of this game in rooms.
+	 */
+	this.width = 5;
+
+	/*!
+	 * \property int Game::height
+	 * \private
+	 * \brief The maximum height of this game in rooms.
+	 */
+	this.height = 5;
+
+	/*!
+	 * \property Room[] Game::rooms
+	 * \private
+	 * \brief All the rooms in this game.
+	 */
+	this.rooms = this.makeRooms(this.width, this.height);
+
+	/*!
 	 * \property Room Game::currentRoom
 	 * \private
 	 * \brief The room \c snake is currently in.
 	 */
-	this.currentRoom = this.makeRoom();
+	this.currentRoom = this.getRoom(Math.floor(this.width / 2), Math.floor(this.height / 2));
 
 	/*!
 	 * \property Snake Game::Snake
@@ -37,22 +58,93 @@ function Game() {
 }
 
 /*!
- * \fs Room Game::makeRoom()
+ * \fn Room Game::getRoom(int x, int y)
  * \private
- * \brief Creates and returns a \c Room.
+ * \brief Returns the room at \p x, \y if it exists; \c undefined otherwise.
  */
-Game.prototype.makeRoom = function () {
-	var width = 19, height = 19;
+Game.prototype.getRoom = function (x, y) {
+	return this.rooms[y * this.width + x];
+};
+
+/*!
+ * \fn Room[] Game::makeRooms(int width, int height)
+ * \private
+ * \brief Creates and returns an array of \c Room.
+ * \detail The array contains up to \p width * \p height rooms, centered on the midpoint.
+ */
+Game.prototype.makeRooms = function (width, height) {
+	var rooms = new Array(width * height);
+
+	var roomWidth = 19, roomHeight = 19;
+	var roomMidX = Math.floor(roomWidth / 2), roomMidY = Math.floor(roomHeight / 2);
+
+	// Ensure the midpoint contains a room.
+	rooms[Math.floor(height / 2) * width + Math.floor(width / 2)] = this.makeRoom(roomWidth, roomHeight);
+
+	// TODO: Improve the room placement algorithm.
+	for (var i = 0; i < rooms.length; ++i) {
+		if (!rooms[i] && Math.random() > 0.5)
+			rooms[i] = this.makeRoom(roomWidth, roomHeight);
+	}
+
+	// Create doorways.
+	function joinRooms(room, adjacentRoom, direction) {
+		var cells = [];
+
+		switch (direction) {
+			case Direction.UP:
+				cells = [ { x: roomMidX - 1, y: 0 }, { x: roomMidX, y: 0 }, { x: roomMidX + 1, y: 0 } ];
+				break;
+			case Direction.RIGHT:
+				cells = [ { x: roomWidth - 1, y: roomMidY - 1 }, { x: roomWidth - 1, y: roomMidY }, { x: roomWidth - 1, y: roomMidY + 1 } ];
+				break;
+			case Direction.DOWN:
+				cells = [ { x: roomMidX - 1, y: roomHeight - 1 }, { x: roomMidX, y: roomHeight - 1 }, { x: roomMidX + 1, y: roomHeight - 1 } ];
+				break;
+			case Direction.LEFT:
+				cells = [ { x: 0, y: roomMidY - 1 }, { x: 0, y: roomMidY }, { x: 0, y: roomMidY + 1 } ];
+				break;
+		}
+
+		cells.forEach(function (cell) {
+			if (!adjacentRoom)
+				room.add(new Wall(cell.x, cell.y));
+		});
+	}
+
+	for (var i = 0; i < rooms.length; ++i) {
+		if (rooms[i]) {
+			joinRooms(rooms[i], rooms[i - height], Direction.UP);
+			joinRooms(rooms[i], rooms[i + 1], Direction.RIGHT);
+			joinRooms(rooms[i], rooms[i + height], Direction.DOWN);
+			joinRooms(rooms[i], rooms[i - 1], Direction.LEFT);
+		}
+	}
+
+	return rooms;
+};
+
+/*!
+ * \fn Room Game::makeRoom(int width, int height)
+ * \private
+ * \brief Creates and returns a \c Room of \p width by \p height cells.
+ * \detail The returned room is surrounded by walls except where doorways could be located and contains two portals.
+ */
+Game.prototype.makeRoom = function (width, height) {
 	var room = new Room(width, height);
 
 	for (var x = 0; x < width; ++x) {
-		room.add(new Wall(x, 0));
-		room.add(new Wall(x, height - 1));
+		if (x < Math.floor(width / 2) - 1 || x > Math.floor(width / 2) + 1) {
+			room.add(new Wall(x, 0));
+			room.add(new Wall(x, height - 1));
+		}
 	}
 
 	for (var y = 0; y < height; ++y) {
-		room.add(new Wall(0, y));
-		room.add(new Wall(width - 1, y));
+		if (y < Math.floor(height / 2) - 1 || y > Math.floor(height / 2) + 1) {
+			room.add(new Wall(0, y));
+			room.add(new Wall(width - 1, y));
+		}
 	}
 
 	// WARNING: The portals could share a cell.
@@ -101,7 +193,55 @@ Game.prototype.makePortals = function (cell1, cell2) {
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
 		this.currentRoom.update();
-		if (!this.currentRoom.contains(this.food))
+
+		// Move between rooms.
+		var nextRoom = undefined;
+		var nextX = this.snake.x, nextY = this.snake.y;
+
+		if (this.snake.y === 0) {
+			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) - this.width];
+			nextY = nextRoom.height - 1;
+		}
+
+		if (this.snake.x === this.currentRoom.width) {
+			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) + 1];
+			nextX = 0;
+		}
+
+		if (this.snake.y === this.currentRoom.height) {
+			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) + this.width];
+			nextY = 0;
+		}
+
+		if (this.snake.x === 0) {
+			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) - 1];
+			nextX = nextRoom.width - 1;
+		}
+
+		if (nextRoom) {
+			function moveTo(snake, x, y) {
+				snake.x = x;
+				snake.y = y;
+				if (snake.tail)
+					moveTo(snake.tail, x, y);
+			}
+
+			function removeSnake(room, snake) {
+				if (snake.tail)
+					removeSnake(room, snake.tail);
+				room.remove(snake);
+			}
+
+			// TODO: Leave a copy of the snake on the old room.
+			removeSnake(this.currentRoom, this.snake);
+			moveTo(this.snake, nextX, nextY);
+			this.currentRoom = nextRoom;
+			this.currentRoom.add(this.snake);
+
+		}
+
+		// Spawn food if it has been eaten.
+		if (!this.currentRoom.contains(function (entity) { return entity instanceof Food; }))
 			this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 	}
 
