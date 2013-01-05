@@ -8,15 +8,29 @@
  * \brief The game state.
  */
 /*!
- * \fn Game()
+ * \fn Game::Game()
  * \memberof Game
+ * \public
  * \brief Constructs a new game.
+ * \detail Creates a snake in a room surrounded by walls containing 2 portals and a piece of food.
  */
 function Game() {
 	var width = 9, height = 9;
 
+	/*!
+	 * \property Room Game::room
+	 * \memberof Game
+	 * \private
+	 * \brief The room \c snake is currently in.
+	 */
 	this.room = new Room(width, height);
 
+	/*!
+	 * \property Snake Game::Snake
+	 * \memberof Game
+	 * \private
+	 * \brief The snake that is the protagonist of this game.
+	 */
 	this.snake = new Snake(Math.floor(width / 2), Math.floor(height / 2), Direction.RIGHT, 3);
 	this.room.add(this.snake);
 
@@ -32,14 +46,21 @@ function Game() {
 
 	this.room.addAll(this.makePortals());
 
+	/*!
+	 * \property Food Game::Food
+	 * \memberof Game
+	 * \private
+	 * \brief The current piece of food.
+	 */
 	this.food = this.makeFood();
 	this.room.add(this.food);
 }
 
 /*!
- * \fn Cell getEmptyCell()
+ * \fn Cell Game::getEmptyCell()
  * \memberof Game
- * \brief Returns a random empty cell.
+ * \private
+ * \brief Returns a random empty cell in \c room.
  */
 Game.prototype.getEmptyCell = function () {
 	var emptyCells = this.room.getCells(function (cell) { return cell.entities.length === 0; });
@@ -47,9 +68,10 @@ Game.prototype.getEmptyCell = function () {
 };
 
 /*!
- * \fn Food makeFood()
+ * \fn Food Game::makeFood()
  * \memberof Game
- * \brief Returns a new Food object in an empty cell.
+ * \private
+ * \brief Creates and returns a \c Food object in an empty cell.
  */
 Game.prototype.makeFood = function () {
 	var emptyCell = this.getEmptyCell();
@@ -57,9 +79,10 @@ Game.prototype.makeFood = function () {
 };
 
 /*!
- * \fn Portal[] makePortals()
+ * \fn Portal[] Game::makePortals()
  * \memberof Game
- * \brief Returns an array of new Portal objects in empty cells.
+ * \private
+ * \brief Creates and returns an array of linked \c Portal objects in empty cells.
  */
 Game.prototype.makePortals = function () {
 	var emptyCell1 = this.getEmptyCell();
@@ -68,10 +91,11 @@ Game.prototype.makePortals = function () {
 };
 
 /*!
- * \fn void update()
+ * \fn void Game::update()
  * \memberof Game
+ * \public
  * \brief Updates this game by one frame.
- * \return \c false if the game is over; \c true otherwise.
+ * \return \c false if this game is over; \c true otherwise.
  */
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
@@ -86,9 +110,10 @@ Game.prototype.update = function () {
 };
 
 /*!
- * \fn void drawOn(renderer)
+ * \fn void Game::drawOn(Renderer renderer)
  * \memberof Game
- * \brief Draws this game state on \p renderer.
+ * \public
+ * \brief Draws the state of this game on \p renderer.
  */
 Game.prototype.drawOn = function (renderer) {
 	renderer.begin();
