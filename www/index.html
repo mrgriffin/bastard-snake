@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Bastard Snake</title>
+<script src="js/action.js"></script>
 <script src="js/canvas-renderer.js"></script>
 <script src="js/direction.js"></script>
 <script src="js/entity.js"></script>
@@ -10,6 +11,7 @@
 <script src="js/game.js"></script>
 <script src="js/keyboard-controller.js"></script>
 <script src="js/portal.js"></script>
+<script src="js/renderer.js"></script>
 <script src="js/room.js"></script>
 <script src="js/snake.js"></script>
 <script src="js/touch-controller.js"></script>
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	document.body.appendChild(instructions);
 
 	var renderer = new CanvasRenderer(container);
-	var FPS = 3;
+	var FPS = 4;
 	var gameover = true;
 
 	// TODO: Draw a demo instead.

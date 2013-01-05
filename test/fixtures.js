@@ -11,4 +11,4 @@ var testFixtures = {
 	}
 };
 
-TestRunner.runAll(testFixtures, print);
+quit(!TestRunner.runAll(testFixtures, print));

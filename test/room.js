@@ -2,18 +2,20 @@ var testRoom = {
 	testAdd: function () {
 		var room = new Room(1, 1);
 
-		function E0() { this.x = 0; this.y = 0; }
-		Entity.mixin(E0);
-		E0.prototype.onAdd = function () { return Room.addEntity(new E1()); };
+		function EntityA() { this.x = 0; this.y = 0; }
+		Entity.mixin(EntityA);
 
-		function E1() { this.x = 0; this.y = 0; }
-		Entity.mixin(E1);
+		function EntityB() { this.x = 0; this.y = 0; }
+		Entity.mixin(EntityB);
+		// [add]
+		EntityA.prototype.onAdd = function (room) { return new Room.AddEntityAction(room, new EntityB()); };
 
-		room.add(new E0());
+		room.add(new EntityA());
 
 		this.assert(room.entities.length === 2, "entities.length !== 2");
-		this.assert(room.contains(function (e) { return e instanceof E0; }, "!contains(e instanceof E0)"));
-		this.assert(room.contains(function (e) { return e instanceof E1; }, "!contains(e instanceof E1)"));
+		this.assert(room.contains(function (e) { return e instanceof EntityA; }, "!contains(e instanceof EntityA)"));
+		this.assert(room.contains(function (e) { return e instanceof EntityB; }, "!contains(e instanceof EntityB)"));
+		// [add]
 	}, testAddAll: function () {
 		var room = new Room(1, 1);
 
@@ -60,12 +62,15 @@ var testRoom = {
 		E0.prototype.onUpdate = function () {
 			this.updated = true;
 		};
+		E0.prototype.onAdd = function (room) {
+			this.room = room;
+		};
 		E0.prototype.onCollide = {
 			E0: function (that) {
 				self.assert(this.updated && that.updated, "onCollide before onUpdate");
 				self.assert(this.collision === undefined, "onCollide called twice");
 				this.collision = that;
-				return [ Room.removeEntity(this), Room.removeEntity(that) ];
+				return [ new Room.RemoveEntityAction(this.room, this), new Room.RemoveEntityAction(that.room, that) ];
 			}
 		};
 
@@ -75,7 +80,7 @@ var testRoom = {
 		var e3 = new E0(2, 0, 0, 0);
 
 		e2.onUpdate = function () {
-			return Room.addEntity(e3);
+			return new Room.AddEntityAction(this.room, e3);
 		};
 
 		room.add(e0);
@@ -93,4 +98,4 @@ var testRoom = {
 	}
 };
 
-TestRunner.runAll(testRoom, print);
+quit(!TestRunner.runAll(testRoom, print));

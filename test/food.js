@@ -17,4 +17,4 @@ var testFood = {
 	}
 };
 
-TestRunner.runAll(testFood, print);
+quit(!TestRunner.runAll(testFood, print));

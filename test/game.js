@@ -3,9 +3,9 @@ var testGame = {
 		// TODO: Should Game take some parameters?
 		var game = new Game();
 
-		this.assert(game.room.contains(function (e) { return e instanceof Snake; }), "!game.room.contains(instanceof Snake)");
-		this.assert(game.room.contains(function (e) { return e instanceof Food; }), "!game.room.contains(instanceof Food)");
+		this.assert(game.currentRoom.contains(function (e) { return e instanceof Snake; }), "!game.room.contains(instanceof Snake)");
+		this.assert(game.currentRoom.contains(function (e) { return e instanceof Food; }), "!game.room.contains(instanceof Food)");
 	}
 };
 
-TestRunner.runAll(testGame, print);
+quit(!TestRunner.runAll(testGame, print));
