@@ -8,7 +8,7 @@ var testRoom = {
 		function EntityB() { this.x = 0; this.y = 0; }
 		Entity.mixin(EntityB);
 		// [add]
-		EntityA.prototype.onAdd = function () { return new Room.AddEntityAction(new EntityB()); };
+		EntityA.prototype.onAdd = function (room) { return new Room.AddEntityAction(room, new EntityB()); };
 
 		room.add(new EntityA());
 
@@ -62,12 +62,15 @@ var testRoom = {
 		E0.prototype.onUpdate = function () {
 			this.updated = true;
 		};
+		E0.prototype.onAdd = function (room) {
+			this.room = room;
+		};
 		E0.prototype.onCollide = {
 			E0: function (that) {
 				self.assert(this.updated && that.updated, "onCollide before onUpdate");
 				self.assert(this.collision === undefined, "onCollide called twice");
 				this.collision = that;
-				return [ new Room.RemoveEntityAction(this), new Room.RemoveEntityAction(that) ];
+				return [ new Room.RemoveEntityAction(this.room, this), new Room.RemoveEntityAction(that.room, that) ];
 			}
 		};
 
@@ -77,7 +80,7 @@ var testRoom = {
 		var e3 = new E0(2, 0, 0, 0);
 
 		e2.onUpdate = function () {
-			return new Room.AddEntityAction(e3);
+			return new Room.AddEntityAction(this.room, e3);
 		};
 
 		room.add(e0);

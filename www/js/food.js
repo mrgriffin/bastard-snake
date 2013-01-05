@@ -29,6 +29,15 @@ function Food(x, y) {
 }
 Entity.mixin(Food);
 
+Food.prototype.onAdd = function (room) {
+	/*!
+	 * \property Room Food::room
+	 * \private
+	 * \brief The \c Room that this food is in.
+	 */
+	this.room = room;
+};
+
 Food.prototype.onCollide = {
 	/*!
 	 * \fn Action | Action[] Food::onCollide(Snake snake)
@@ -37,6 +46,6 @@ Food.prototype.onCollide = {
 	 * \sa Snake::onCollide(Food food)
 	 */
 	Snake: function (snake) {
-		return new Room.RemoveEntityAction(this);
+		return new Room.RemoveEntityAction(this.room, this);
 	}
 };

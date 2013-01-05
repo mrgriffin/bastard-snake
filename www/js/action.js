@@ -11,12 +11,9 @@
  * \sa Room::RemoveEntityAction
  */
 /*!
- * \fn void Action::apply(Room room)
+ * \fn void Action::apply()
  * \protected
- * \brief Applies this action to \p room.
- */
-/*!
- * \overload void Action::apply()
+ * \brief Applies this action.
  */
 var Action = {
 	/*!

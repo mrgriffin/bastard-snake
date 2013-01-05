@@ -75,9 +75,15 @@ Entity.mixin(Snake);
  * \detail Pseudo-recursively adds the entire tail via \c Tail::onAdd.
  * \sa Tail::onAdd
  */
-Snake.prototype.onAdd = function () {
+Snake.prototype.onAdd = function (room) {
+	/*!
+	 * \property Room Snake::room
+	 * \private
+	 * \brief The \c Room that this snake is in.
+	 */
+	this.room = room;
 	if (this.tail)
-		return new Room.AddEntityAction(this.tail);
+		return new Room.AddEntityAction(room, this.tail);
 }
 
 /*!
@@ -101,7 +107,7 @@ Snake.prototype.onCollide = {
 	 * \sa Food::onCollide(Snake snake)
 	 */
 	Food: function () {
-		return new Room.AddEntityAction(this.grow());
+		return new Room.AddEntityAction(this.room, this.grow());
 	/*!
 	 * \fn Action | Action[] Snake::onCollide(Tail tail)
 	 * \protected
@@ -189,7 +195,7 @@ function Tail(x, y, head, length) {
 Entity.mixin(Tail);
 
 /*!
- * \fn Action | Action[] Tail::onAdd()
+ * \fn Action | Action[] Tail::onAdd(Room room)
  * \protected
  * \brief Adds the tail of this tail segment, if it has one.
  * \detail Pseudo-recursively adds the entire tail via \c Tail::onAdd.

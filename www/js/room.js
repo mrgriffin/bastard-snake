@@ -40,22 +40,23 @@ var Room = (function () {
 	 * \brief Adds an \c Entity to a \c Room.
 	 */
 	/*!
-	 * \fn Room::AddEntityAction::AddEntityAction(Entity entity)
+	 * \fn Room::AddEntityAction::AddEntityAction(Room room, Entity entity)
 	 * \public
-	 * \brief Constructs an action that adds \p entity to the room it is applied to.
+	 * \brief Constructs an action that adds \p entity to \p room.
 	 */
-	Room.AddEntityAction = function (entity) {
+	Room.AddEntityAction = function (room, entity) {
+		this.room = room;
 		this.entity = entity;
-	}
+	};
 
 	/*!
-	 * \fn void Room::AddEntityAction::apply(Room room)
+	 * \fn void Room::AddEntityAction::apply()
 	 * \protected
-	 * \brief Adds the \c Entity to \p room.
+	 * \brief Adds \p entity to \p room.
 	 * \sa Room::AddEntityAction::AddEntityAction
 	 */
-	Room.AddEntityAction.prototype.apply = function (room) {
-		room.add(this.entity);
+	Room.AddEntityAction.prototype.apply = function () {
+		this.room.add(this.entity);
 	};
 
 	/*!
@@ -64,23 +65,24 @@ var Room = (function () {
 	 * \brief Removes an \c Entity from a \c Room.
 	 */
 	/*!
-	 * \fn Room::RemoveEntityAction::RemoveEntityAction(Entity entity)
+	 * \fn Room::RemoveEntityAction::RemoveEntityAction(Room room, Entity entity)
 	 * \public
-	 * \brief Constructs an action that removes \p entity from the room it is applied to.
-	 * \detail If the room does not contain \p entity (e.g. because it was already removed) this action has no effect.
+	 * \brief Constructs an action that removes \p entity from \p room.
+	 * \detail If \p room does not contain \p entity (e.g. because it was already removed) this action has no effect.
 	 */
-	Room.RemoveEntityAction = function (entity) {
+	Room.RemoveEntityAction = function (room, entity) {
+		this.room = room;
 		this.entity = entity;
-	}
+	};
 
 	/*!
-	 * \fn Room::RemoveEntityAction::apply(Room room)
+	 * \fn Room::RemoveEntityAction::apply()
 	 * \protected
-	 * \brief Removes the \c Entity from \p room.
+	 * \brief Removes \p entity from \p room.
 	 * \sa Room::RemoveEntityAction::RemoveEntityAction
 	 */
-	Room.RemoveEntityAction.prototype.apply = function (room) {
-		room.remove(this.entity);
+	Room.RemoveEntityAction.prototype.apply = function () {
+		this.room.remove(this.entity);
 	};
 
 	/*!
@@ -116,7 +118,7 @@ var Room = (function () {
 			throw new TypeError("Room.add: type of entity does not mixin Entity");
 		this.entities.push(entity);
 		var addActions = [];
-		var actions = assertAction(entity.onAdd(), "Room.add");
+		var actions = assertAction(entity.onAdd(this), "Room.add");
 		if (actions !== undefined)
 			addActions = addActions.concat(actions);
 		addActions.forEach(function (action) { action.apply(this) }, this);
@@ -218,7 +220,7 @@ var Room = (function () {
 			if (actions !== undefined)
 				updateActions = updateActions.concat(actions);
 		});
-		updateActions.forEach(function (action) { action.apply(this) }, this);
+		updateActions.forEach(function (action) { action.apply() });
 
 		var collideActions = [];
 		for (var i = 0; i < this.entities.length; ++i) {
@@ -233,7 +235,7 @@ var Room = (function () {
 				}
 			}
 		}
-		collideActions.forEach(function (action) { action.apply(this) }, this);
+		collideActions.forEach(function (action) { action.apply() });
 	};
 
 	return Room;
