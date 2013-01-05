@@ -14,73 +14,82 @@
  * \detail Creates a snake in a room surrounded by walls containing 2 portals and a piece of food.
  */
 function Game() {
-	var width = 19, height = 19;
-
 	/*!
-	 * \property Room Game::room
+	 * \property Room Game::currentRoom
 	 * \private
 	 * \brief The room \c snake is currently in.
 	 */
-	this.room = new Room(width, height);
+	this.currentRoom = this.makeRoom();
 
 	/*!
 	 * \property Snake Game::Snake
 	 * \private
 	 * \brief The snake that is the protagonist of this game.
 	 */
-	this.snake = new Snake(Math.floor(width / 2), Math.floor(height / 2), Direction.RIGHT, 3);
-	this.room.add(this.snake);
-
-	for (var x = 0; x < width; ++x) {
-		this.room.add(new Wall(x, 0));
-		this.room.add(new Wall(x, height - 1));
-	}
-
-	for (var y = 0; y < height; ++y) {
-		this.room.add(new Wall(0, y));
-		this.room.add(new Wall(width - 1, y));
-	}
-
-	this.room.addAll(this.makePortals());
+	this.currentRoom.add(this.snake = new Snake(Math.floor(this.currentRoom.width / 2), Math.floor(this.currentRoom.height / 2), Direction.RIGHT, 3));
 
 	/*!
 	 * \property Food Game::Food
 	 * \private
 	 * \brief The current piece of food.
 	 */
-	this.food = this.makeFood();
-	this.room.add(this.food);
+	this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 }
 
 /*!
- * \fn Cell Game::getEmptyCell()
+ * \fs Room Game::makeRoom()
  * \private
- * \brief Returns a random empty cell in \c room.
+ * \brief Creates and returns a \c Room.
  */
-Game.prototype.getEmptyCell = function () {
-	var emptyCells = this.room.getCells(function (cell) { return cell.entities.length === 0; });
+Game.prototype.makeRoom = function () {
+	var width = 19, height = 19;
+	var room = new Room(width, height);
+
+	for (var x = 0; x < width; ++x) {
+		room.add(new Wall(x, 0));
+		room.add(new Wall(x, height - 1));
+	}
+
+	for (var y = 0; y < height; ++y) {
+		room.add(new Wall(0, y));
+		room.add(new Wall(width - 1, y));
+	}
+
+	// WARNING: The portals could share a cell.
+	room.addAll(this.makePortals(this.getEmptyCell(room), this.getEmptyCell(room)));
+
+	return room;
+};
+
+/*!
+ * \fn Cell Game::getEmptyCell(Room room)
+ * \private
+ * \brief Returns a random empty cell in \p room.
+ */
+// TODO: This can be a free function.
+Game.prototype.getEmptyCell = function (room) {
+	var emptyCells = room.getCells(function (cell) { return cell.entities.length === 0; });
 	return emptyCells[Math.floor(Math.random() * emptyCells.length)];
 };
 
 /*!
- * \fn Food Game::makeFood()
+ * \fn Food Game::makeFood(Cell cell)
  * \private
- * \brief Creates and returns a \c Food object in an empty cell.
+ * \brief Creates and returns a \c Food object in cell \p cell.
  */
-Game.prototype.makeFood = function () {
-	var emptyCell = this.getEmptyCell();
-	return new Food(emptyCell.x, emptyCell.y);
+// TODO: This can be a free function.
+Game.prototype.makeFood = function (cell) {
+	return new Food(cell.x, cell.y);
 };
 
 /*!
- * \fn Portal[] Game::makePortals()
+ * \fn Portal[] Game::makePortals(cell1, cell2)
  * \private
- * \brief Creates and returns an array of linked \c Portal objects in empty cells.
+ * \brief Creates and returns an array of linked \c Portal objects in cells \p cell1 and \p cell2.
  */
-Game.prototype.makePortals = function () {
-	var emptyCell1 = this.getEmptyCell();
-	var emptyCell2 = this.getEmptyCell();
-	return Portal.makePortals(emptyCell1.x, emptyCell1.y, emptyCell2.x, emptyCell2.y);
+// TODO: This can be a free function.
+Game.prototype.makePortals = function (cell1, cell2) {
+	return Portal.makePortals(cell1.x, cell1.y, cell2.x, cell2.y);
 };
 
 /*!
@@ -91,11 +100,9 @@ Game.prototype.makePortals = function () {
  */
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
-		this.room.update();
-		if (!this.room.contains(this.food)) {
-			this.food = this.makeFood();
-			this.room.add(this.food);
-		}
+		this.currentRoom.update();
+		if (!this.currentRoom.contains(this.food))
+			this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 	}
 
 	return !this.snake.crashed;
@@ -109,6 +116,6 @@ Game.prototype.update = function () {
 Game.prototype.drawOn = function (renderer) {
 	renderer.begin();
 	// TODO: Add a drawOn method to room?
-	this.room.entities.forEach(function (entity) { renderer.draw(entity); });
+	this.currentRoom.entities.forEach(function (entity) { renderer.draw(entity); });
 	renderer.end();
 };
