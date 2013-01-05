@@ -9,7 +9,6 @@
  */
 /*!
  * \fn Game::Game()
- * \memberof Game
  * \public
  * \brief Constructs a new game.
  * \detail Creates a snake in a room surrounded by walls containing 2 portals and a piece of food.
@@ -19,7 +18,6 @@ function Game() {
 
 	/*!
 	 * \property Room Game::room
-	 * \memberof Game
 	 * \private
 	 * \brief The room \c snake is currently in.
 	 */
@@ -27,7 +25,6 @@ function Game() {
 
 	/*!
 	 * \property Snake Game::Snake
-	 * \memberof Game
 	 * \private
 	 * \brief The snake that is the protagonist of this game.
 	 */
@@ -48,7 +45,6 @@ function Game() {
 
 	/*!
 	 * \property Food Game::Food
-	 * \memberof Game
 	 * \private
 	 * \brief The current piece of food.
 	 */
@@ -58,7 +54,6 @@ function Game() {
 
 /*!
  * \fn Cell Game::getEmptyCell()
- * \memberof Game
  * \private
  * \brief Returns a random empty cell in \c room.
  */
@@ -69,7 +64,6 @@ Game.prototype.getEmptyCell = function () {
 
 /*!
  * \fn Food Game::makeFood()
- * \memberof Game
  * \private
  * \brief Creates and returns a \c Food object in an empty cell.
  */
@@ -80,7 +74,6 @@ Game.prototype.makeFood = function () {
 
 /*!
  * \fn Portal[] Game::makePortals()
- * \memberof Game
  * \private
  * \brief Creates and returns an array of linked \c Portal objects in empty cells.
  */
@@ -92,7 +85,6 @@ Game.prototype.makePortals = function () {
 
 /*!
  * \fn void Game::update()
- * \memberof Game
  * \public
  * \brief Updates this game by one frame.
  * \return \c false if this game is over; \c true otherwise.
@@ -111,7 +103,6 @@ Game.prototype.update = function () {
 
 /*!
  * \fn void Game::drawOn(Renderer renderer)
- * \memberof Game
  * \public
  * \brief Draws the state of this game on \p renderer.
  */

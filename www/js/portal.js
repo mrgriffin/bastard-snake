@@ -12,21 +12,18 @@ var Portal = (function () {
 	function Portal(x, y) {
 		/*!
 		 * \property int Portal::x
-		 * \memberof Portal
 		 * \protected
 		 * \brief The X coordinate of this portal.
 		 */
 		this.x = x;
 		/*!
 		 * \property int Portal::y
-		 * \memberof Portal
 		 * \protected
 		 * \brief The Y coordinate of this portal.
 		 */
 		this.y = y;
 		/*!
 		 * \property Portal Portal::pair
-		 * \memberof Portal
 		 * \private
 		 * \brief The portal that this portal teleports entities to.
 		 */
@@ -36,7 +33,6 @@ var Portal = (function () {
 	Portal.prototype.onCollide = {
 		/*!
 		 * \fn Action | Action[] Portal::onCollide(Entity else)
-		 * \memberof Portal
 		 * \protected
 		 * \brief Teleports \p else to the position of \c pair.
 		 */
@@ -47,7 +43,6 @@ var Portal = (function () {
 
 	/*!
 	 * \fn Portal[] Portal::makePortals(x1, y1, x2, y2)
-	 * \memberof Portal
 	 * \public
 	 * \brief Returns an array of two connected portals at \p x1, \p y1 and \p x2, \p y2.
 	 */

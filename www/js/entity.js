@@ -17,7 +17,6 @@
 var Entity = (function () {
 	/*!
 	 * \fn T Entity::assertAction(T action, String method)
-	 * \memberof Entity
 	 * \private
 	 * \brief Returns action if is of type \c Action, \c Action[] or \c undefined; throws \c TypeError otherwise.
 	 */
@@ -39,7 +38,6 @@ var Entity = (function () {
 	var entityPrototype = {
 		/*!
 		 * \fn Action | Action[] Entity::collide(Entity that)
-		 * \memberof Entity
 		 * \private
 		 * \brief Executes the \c onCollide handler matching the type of \p that; or the \c else handler if none matched.
 		 * \return the result of the executed handler; or \c undefined if none matched.
@@ -58,7 +56,6 @@ var Entity = (function () {
 				return assertAction(this.onCollide['else'].call(this, that), "Entity.collide");
 		/*!
 		 * \property Action | Action[] (Entity)[] Entity::onCollide
-		 * \memberof Entity
 		 * \protected
 		 * \brief Associative-array of type names to handler functions to execute when this entity collides with an entity of that type.
 		 * \return one of an \c Action, \c Action[] or \c undefined.
@@ -68,7 +65,6 @@ var Entity = (function () {
 		}, onCollide: {
 		/*!
 		 * \fn Action | Action[] Entity::update()
-		 * \memberof Entity
 		 * \private
 		 * \brief Updates this entity.
 		 * \detail calls \c onUpdate.  if \c vx and/or \c vy are defined they will be added to \c x and \c y respectively.
@@ -85,7 +81,6 @@ var Entity = (function () {
 			return actions;
 		/*!
 		 * \fn Action | Action[] Entity::onUpdate()
-		 * \memberof Entity
 		 * \protected
 		 * \brief Called before this entity is updated.
 		 * \return one of an \c Action, \c Action[] or \c undefined.
@@ -95,7 +90,6 @@ var Entity = (function () {
 		}, onUpdate: function () {
 		/*!
 		 * \fn Action | Action[] Entity::onAdd()
-		 * \memberof Entity
 		 * \protected
 		 * \brief Called after this entity is added to a \c Room.
 		 * \return one of an \c Action, \c Action[] or \c undefined.
@@ -106,21 +100,18 @@ var Entity = (function () {
 		}
 		/*!
 		 * \property int Entity::x
-		 * \memberof Entity
 		 * \protected
 		 * \brief The X coordinate of this entity.
 		 * \detail Should be defined by a class that mixes \c Entity.
 		 */
 		/*!
 		 * \property int Entity::y
-		 * \memberof Entity
 		 * \protected
 		 * \brief The Y coordinate of this entity.
 		 * \detail Should be defined by a class that mixes \c Entity.
 		 */
 		/*!
 		 * \property int Entity::vx
-		 * \memberof Entity
 		 * \protected
 		 * \brief The X velocity of this entity.
 		 * \detail May be defined by a class that mixes \c Entity; if defined \c update will increase \c x by \c vx.
@@ -128,7 +119,6 @@ var Entity = (function () {
 		 */
 		/*!
 		 * \property int Entity::vy
-		 * \memberof Entity
 		 * \protected
 		 * \brief The Y velocity of this entity.
 		 * \detail May be defined by a class that mixes \c Entity; if defined \c update will increase \c y by \c vy.
@@ -143,7 +133,6 @@ var Entity = (function () {
 	 */
 	/*!
 	 * \fn Entity::MoveAction::MoveAction(Entity entity, int x, int y)
-	 * \memberof Entity::MoveAction
 	 * \public
 	 * \brief Constructs an action that moves \p entity to \p x, \p y.
 	 */
@@ -155,7 +144,6 @@ var Entity = (function () {
 
 	/*!
 	 * \fn void Entity::MoveAction::apply()
-	 * \memberof Entity::MoveAction
 	 * \protected
 	 * \brief Moves the entity.
 	 */
@@ -168,7 +156,6 @@ var Entity = (function () {
 		MoveAction: MoveAction,
 		/*!
 		 * \fn bool Entity::isEntity(Object object)
-		 * \memberof Entity
 		 * \public
 		 * \brief Returns \c true if the type of \p object mixes \c Entity; \c false otherwise.
 		 * \sa Entity::mixin
@@ -177,7 +164,6 @@ var Entity = (function () {
 			return '_entity_name' in object;
 		/*!
 		 * \fn void Entity::mixin(Function klass)
-		 * \memberof Entity
 		 * \public
 		 * \brief Mixes \c Entity into \p klass.
 		 * \detail \p klass should be a function that defines the constructor of a class.

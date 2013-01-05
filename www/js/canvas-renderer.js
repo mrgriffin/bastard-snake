@@ -10,14 +10,12 @@
  */
 /*!
  * \fn CanvasRenderer::CanvasRenderer(HTMLElement element)
- * \memberof CanvasElement
  * \public
  * \brief Constructs a renderer that uses the HTML5 \c canvas element.
  */
 function CanvasRenderer(element) {
 	/*!
 	 * \property HTMLElement CanvasRenderer::canvas
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief The \c canvas element that this renders on.
 	 */
@@ -26,7 +24,6 @@ function CanvasRenderer(element) {
 	this.canvas.height = 16 * 9;
 	/*!
 	 * \property Object CanvasRenderer::context
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief The 2D context of \c canvas.
 	 */
@@ -36,7 +33,6 @@ function CanvasRenderer(element) {
 
 /*!
  * \fn void CanvasRenderer::begin()
- * \memberof CanvasRenderer
  * \public
  * \brief Initializes the \c canvas element for the next frame.
  */
@@ -48,7 +44,6 @@ CanvasRenderer.prototype.begin = function () {
 
 /*!
  * \fn void CanvasRenderer::end()
- * \memberof CanvasRenderer
  * \public
  * \brief Finalizes the \c canvas element and draws the next frame.
  */
@@ -56,7 +51,6 @@ CanvasRenderer.prototype.end = function () {};
 
 /*!
  * \fn void CanvasRenderer::draw(Entity entity)
- * \memberof CanvasRenderer
  * \public
  * \brief Draws \c entity on the next frame.
  * \exception TypeError the type of \p entity does not mixin \c Entity.
@@ -72,7 +66,6 @@ CanvasRenderer.prototype.draw = function (entity) {
 CanvasRenderer.prototype.drawEntity = {
 	/*!
 	 * \fn void CanvasRenderer::draw(Food food)
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief Draws a piece of food.
 	 * \detail Food is drawn as a red square.
@@ -82,7 +75,6 @@ CanvasRenderer.prototype.drawEntity = {
 		this.context.fillRect(food.x * 16 + 1, food.y * 16 + 1, 14, 14);
 	/*!
 	 * \fn void CanvasRenderer::draw(Portal portal)
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief Draws a portal.
 	 * \detail Portals are drawn as alternating blue and orange circles.
@@ -94,7 +86,6 @@ CanvasRenderer.prototype.drawEntity = {
 		this.context.fill();
 	/*!
 	 * \fn void CanvasRenderer::draw(Snake snake)
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief Draws the head of a snake.
 	 * \detail Heads are drawn as a blue squares.
@@ -104,7 +95,6 @@ CanvasRenderer.prototype.drawEntity = {
 		this.context.fillRect(snake.x * 16 + 1, snake.y * 16 + 1, 14, 14);
 	/*!
 	 * \fn void CanvasRenderer::draw(Tail tail)
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief Draws a tail segment of a snake.
 	 * \detail Tail segments are drawn as a blue squares.
@@ -114,7 +104,6 @@ CanvasRenderer.prototype.drawEntity = {
 		this.context.fillRect(tail.x * 16 + 1, tail.y * 16 + 1, 14, 14);
 	/*!
 	 * \fn void CanvasRenderer::draw(Wall wall)
-	 * \memberof CanvasRenderer
 	 * \private
 	 * \brief Draws a wall.
 	 * \detail Walls are drawn as black squares.

@@ -9,7 +9,6 @@
  */
 /*!
  * \fn TouchController::TouchController(Snake snake, HTMLElement element)
- * \memberof TouchController
  * \public
  * \brief Constructs a touch controller that controls \p snake via touching \p element.
  * \detail Touches on the left half of \p element rotate \c snake counterclockwise, and touches on the right half clockwise.
@@ -18,7 +17,6 @@
 function TouchController(snake, element) {
 	/*!
 	 * \property HTMLElement TouchController::element
-	 * \memberof TouchController
 	 * \private
 	 * \brief The element that controls the snake when touched.
 	 */
@@ -28,7 +26,6 @@ function TouchController(snake, element) {
 
 	/*!
 	 * \property HTMLElement TouchController::left
-	 * \memberof TouchController
 	 * \private
 	 * \brief The element on the left half of \p element that rotates the snake counterclockwise when touched.
 	 */
@@ -45,7 +42,6 @@ function TouchController(snake, element) {
 
 	/*!
 	 * \property HTMLElement TouchController::right
-	 * \memberof TouchController
 	 * \private
 	 * \brief The element on the right half of \p element that rotates the snake clockwise when touched.
 	 */
@@ -63,7 +59,6 @@ function TouchController(snake, element) {
 
 /*!
  * \fn TouchController::remove()
- * \memberof TouchContoller
  * \public
  * \brief Removes this touch controller from \c element.
  */

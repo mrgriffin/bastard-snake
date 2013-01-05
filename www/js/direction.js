@@ -17,7 +17,6 @@ var Direction = (function () {
 
 	/*!
 	 * \fn Direction Direction::cw()
-	 * \memberof Direction
 	 * \public
 	 * \brief Returns the direction clockwise of this direction.
 	 */
@@ -27,7 +26,6 @@ var Direction = (function () {
 
 	/*!
 	 * \fn Direction Direction::ccw()
-	 * \memberof Direction
 	 * \public
 	 * \brief Returns the direction counterclockwise of this direction.
 	 */

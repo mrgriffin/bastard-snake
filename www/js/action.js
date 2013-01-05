@@ -12,7 +12,6 @@
  */
 /*!
  * \fn void Action::apply(Room room)
- * \memberof Action
  * \protected
  * \brief Applies this action to \p room.
  */
@@ -22,7 +21,6 @@
 var Action = {
 	/*!
 	 * \fn bool Action::isAction(Object object)
-	 * \memberof Action
 	 * \public
 	 * \brief Returns true if \p object is an \c Action.
 	 */

@@ -10,28 +10,24 @@
 var Room = (function () {
 	/*!
 	 * \fn Room::Room(int width, int height)
-	 * \memberof Room
 	 * \public
 	 * \brief Constructs an empty room width \p width by height \p height cells.
 	 */
 	function Room(width, height) {
 		/*!
 		 * \property const int Room::width
-		 * \memberof Room
 		 * \public
 		 * \brief The width of this room in cells.
 		 */
 		this.width = width;
 		/*!
 		 * \property const int Room::height
-		 * \memberof Room
 		 * \public
 		 * \brief The height of this room in cells.
 		 */
 		this.height = height;
 		/*!
 		 * \property Entity[] Room::entities
-		 * \memberof Room
 		 * \private
 		 * \brief The entities contained within this room.
 		 */
@@ -45,7 +41,6 @@ var Room = (function () {
 	 */
 	/*!
 	 * \fn Room::AddEntityAction::AddEntityAction(Entity entity)
-	 * \memberof Room::AddEntityAction
 	 * \public
 	 * \brief Constructs an action that adds \p entity to the room it is applied to.
 	 */
@@ -55,7 +50,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn void Room::AddEntityAction::apply(Room room)
-	 * \memberof Room::AddEntityAction
 	 * \protected
 	 * \brief Adds the \c Entity to \p room.
 	 * \sa Room::AddEntityAction::AddEntityAction
@@ -71,7 +65,6 @@ var Room = (function () {
 	 */
 	/*!
 	 * \fn Room::RemoveEntityAction::RemoveEntityAction(Entity entity)
-	 * \memberof Room::RemoveEntityAction
 	 * \public
 	 * \brief Constructs an action that removes \p entity from the room it is applied to.
 	 * \detail If the room does not contain \p entity (e.g. because it was already removed) this action has no effect.
@@ -82,7 +75,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn Room::RemoveEntityAction::apply(Room room)
-	 * \memberof Room::RemoveEntityAction
 	 * \protected
 	 * \brief Removes the \c Entity from \p room.
 	 * \sa Room::RemoveEntityAction::RemoveEntityAction
@@ -93,7 +85,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn T Room::assertAction(T action, String method)
-	 * \memberof Room
 	 * \private
 	 * \brief Returns action if is of type \c Action, \c Action[] or \c undefined; throws \c TypeError otherwise.
 	 */
@@ -114,7 +105,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn void Room::add(Entity entity)
-	 * \memberof Room
 	 * \public
 	 * \brief Adds \p entity to this room.
 	 * \detail Calls \c entity.onAdd and applies the returned actions after adding \p entity.
@@ -134,7 +124,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn void Room::addAll(Entity[] entities)
-	 * \memberof Room
 	 * \public
 	 * \brief Adds all the entities in \p entities to this room.
 	 * \exception TypeError the type of an entity does not mixin \c Entity.
@@ -147,7 +136,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn void Room::remove(Entity entity)
-	 * \memberof Room
 	 * \public
 	 * \brief Removes \p entity from this room.
 	 * \detail If this room does not contain \p entity this method has no effect.
@@ -158,7 +146,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn bool Room::contains(Entity entity | bool (Entity) predicate)
-	 * \memberof Room
 	 * \public
 	 * \brief Returns \c true if this room contains \p entity or \p predicate returns \c true for an entity in the room; \c false otherwise.
 	 */
@@ -171,33 +158,28 @@ var Room = (function () {
 
 	/*!
 	 * \class Room::Cell
-	 * \memberof Room
 	 * \public
 	 * \brief Single cell in a room.
 	 * \sa Room::getCells
 	 */
 	/*!
 	 * \fn Room::Cell::Cell(int x, int y, Entity[] entities)
-	 * \memberof Room::Cell
 	 * \private
 	 * \brief Constructs a cell at \p x, \p y containing the entities \p entities.
 	 */
 	function Cell(x, y, entities) {
 		/*!
 		 * \property int Room::Cell::x
-		 * \memberof Room::Cell
 		 * \brief The X coordinate of this cell.
 		 */
 		this.x = x;
 		/*!
 		 * \property int Room::Cell::y
-		 * \memberof Room::Cell
 		 * \brief The Y coordinate of this cell.
 		 */
 		this.y = y;
 		/*!
 		 * \property Entity[] Room::Cell::entities
-		 * \memberof Room::Cell
 		 * \brief The entities that are located within this cell.
 		 */
 		this.entities = entities;
@@ -205,7 +187,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn const Room::Cell[] Room::getCells(bool (Cell) predicate)
-	 * \memberof Room
 	 * \public
 	 * \brief Returns all the cells for which \p predicate returns \c true.
 	 * \sa Room::Cell
@@ -226,7 +207,6 @@ var Room = (function () {
 
 	/*!
 	 * \fn void Room::update()
-	 * \memberof Room
 	 * \public
 	 * \brief Updates all entities in this room.
 	 * \exception TypeError the return type of any entity's \c onUpdate or \c onCollide method was not one of an \c Action, \c Action[] or \c undefined.

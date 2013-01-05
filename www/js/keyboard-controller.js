@@ -9,7 +9,6 @@
  */
 /*!
  * \fn KeyboardController::KeyboardController(Snake snake)
- * \memberof KeyboardController
  * \public
  * \brief Constructs a controller that controls \p snake via the keyboard.
  * \detail The direction of \p snake can be changed by pressing the cursor keys or WASD.
@@ -17,7 +16,6 @@
 function KeyboardController(snake) {
 	/*!
 	 * \property void (Event) KeyboardController::eventListener
-	 * \memberof KeyboardController
 	 * \private
 	 * \brief The event listener responsible for controlling the snake.
 	 */
@@ -40,7 +38,6 @@ function KeyboardController(snake) {
 
 /*!
  * \fn KeyboardController::remove()
- * \memberof KeyboardContoller
  * \public
  * \brief Removes this keyboard controller from the page.
  */
