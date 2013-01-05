@@ -1,4 +1,13 @@
-all :
+all : images
+
+images : image-snake
+
+image-snake : images/snake.svg
+	[ -d "www/img" ] || mkdir "www/img"
+	inkscape -z -e"www/img/snake-tail.png" -ji 'tail' -a"0:0:24:24" -f"$<"
+	inkscape -z -e"www/img/snake-body.png" -ji 'body' -a"24:0:48:24" -f"$<"
+	inkscape -z -e"www/img/snake-bend.png" -ji 'bend' -a"48:0:72:24" -f"$<"
+	inkscape -z -e"www/img/snake-head.png" -ji 'head' -a"72:0:96:24" -f"$<"
 
 .PHONY : push
 push : check
