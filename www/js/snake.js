@@ -110,6 +110,7 @@ Snake.prototype.onCollide = {
 	 * \memberof Snake
 	 * \protected
 	 * \brief Grows this snake.
+	 * \sa Food::onCollide(Snake snake)
 	 */
 	Food: function () {
 		return new Room.AddEntityAction(this.grow());
