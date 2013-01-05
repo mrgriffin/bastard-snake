@@ -23,7 +23,7 @@ function CanvasRenderer(element) {
 	this.canvas.width = 16 * 19;
 	this.canvas.height = 16 * 19;
 	/*!
-	 * \property Object CanvasRenderer::context
+	 * \property CanvasRenderingContext2D CanvasRenderer::context
 	 * \private
 	 * \brief The 2D context of \c canvas.
 	 */
