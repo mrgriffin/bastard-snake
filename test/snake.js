@@ -4,7 +4,6 @@ var testSnake = {
 		this.assert(snake.x === 0, "snake.x !== 0");
 		this.assert(snake.y === 1, "snake.y !== 1");
 		this.assert(snake.direction === Direction.RIGHT, "snake.direction !== RIGHT");
-		this.assert(snake.length === 3, "snake.length !== 3");
 		this.assert(snake.tail !== undefined, "snake.tail !== undefined");
 		this.assert(snake.tail.tail !== undefined, "snake.tail.tail !== undefined");
 		this.assert(snake.tail.tail.tail === undefined, "snake.tail.tail.tail === undefined");
