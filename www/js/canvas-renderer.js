@@ -182,7 +182,7 @@ CanvasRenderer.prototype.end = function () {
 		}
 
 		// Draw the tail.
-		if (snake.length > 1) {
+		if (snake.length > 1 && (lastSegment.x !== snake[0].x || lastSegment.y !== snake[0].y)) {
 			drawScaledRotated(this.context,
 			                  this.snakeTail,
 			                  tailSegment.x * 24,
