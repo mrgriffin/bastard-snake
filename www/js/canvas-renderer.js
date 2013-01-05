@@ -61,7 +61,6 @@ CanvasRenderer.prototype.end = function () {};
  * \brief Draws \c entity on the next frame.
  * \exception TypeError the type of \p entity does not mixin \c Entity.
  */
-// TODO: Should this method be split into well defined drawX methods?
 CanvasRenderer.prototype.draw = function (entity) {
 	if (!Entity.isEntity(entity))
 		throw new TypeError("CanvasRenderer.draw: type of entity does not mixin Entity");
