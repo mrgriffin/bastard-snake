@@ -89,14 +89,14 @@ var Entity = (function () {
 		 */
 		}, onUpdate: function () {
 		/*!
-		 * \fn Action | Action[] Entity::onAdd()
+		 * \fn Action | Action[] Entity::onAdd(Room room)
 		 * \protected
-		 * \brief Called after this entity is added to a \c Room.
+		 * \brief Called after this entity is added to \p room.
 		 * \return one of an \c Action, \c Action[] or \c undefined.
 		 * \snippet test/room.js add
 		 * \sa Room::add
 		 */
-		}, onAdd: function () {
+		}, onAdd: function (room) {
 		}
 		/*!
 		 * \property int Entity::x
