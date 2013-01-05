@@ -12,7 +12,7 @@
  * \public
  * \brief Constructs a touch controller that controls \p snake via touching \p element.
  * \detail Touches on the left half of \p element rotate \c snake counterclockwise, and touches on the right half clockwise.
- * \warning Sets the \c position css property of \p element to \c relative.
+ * \warning sets the \c position css property of \p element to \c relative.
  */
 function TouchController(snake, element) {
 	/*!
