@@ -159,6 +159,7 @@ Game.prototype.makeRoom = function (width, height) {
  * \brief Returns a random empty cell in \p room.
  */
 // TODO: This can be a free function.
+// TODO: This must not return cells in the doorways.
 Game.prototype.getEmptyCell = function (room) {
 	var emptyCells = room.getCells(function (cell) { return cell.entities.length === 0; });
 	return emptyCells[Math.floor(Math.random() * emptyCells.length)];
@@ -192,9 +193,29 @@ Game.prototype.makePortals = function (cell1, cell2) {
  */
 Game.prototype.update = function () {
 	if (!this.snake.crashed) {
-		this.currentRoom.update();
+		this.rooms.forEach(function (room) {
+			room.update();
+			// Remove any "ghost" snake tails that are entirely out of bounds.
+			room.entities.filter(function (entity) {
+				return entity instanceof Snake && (entity.x < 0 || entity.x >= room.width || entity.y < 0 || entity.y >= room.height);
+			}).forEach(function (snake) {
+				function inBounds(snake) {
+					return (snake.x > 0 && snake.x < room.width && snake.y > 0 && snake.y < room.height) || (snake.tail && inBounds(snake.tail));
+				}
+
+				function remove(snake) {
+					room.remove(snake);
+					if (snake.tail)
+						remove(snake.tail);
+				}
+
+				if (!inBounds(snake))
+					remove(snake);
+			});
+		});
 
 		// Move between rooms.
+		// TODO: Only if !this.snake.crashed.
 		var nextRoom = undefined;
 		var nextX = this.snake.x, nextY = this.snake.y;
 
@@ -227,13 +248,28 @@ Game.prototype.update = function () {
 			}
 
 			function removeSnake(room, snake) {
+				room.remove(snake);
 				if (snake.tail)
 					removeSnake(room, snake.tail);
-				room.remove(snake);
 			}
 
-			// TODO: Leave a copy of the snake on the old room.
+			function cloneSnake(snake) {
+				var cloneHead = new Snake(snake.x, snake.y, snake.direction, 1);
+				var tail = snake.tail, clone = cloneHead;
+
+				while (tail) {
+					clone.grow();
+					clone.tail.x = tail.x;
+					clone.tail.y = tail.y;
+					tail = tail.tail;
+					clone = clone.tail;
+				}
+
+				return cloneHead;
+			}
+
 			removeSnake(this.currentRoom, this.snake);
+			this.currentRoom.add(cloneSnake(this.snake));
 			moveTo(this.snake, nextX, nextY);
 			this.currentRoom = nextRoom;
 			this.currentRoom.add(this.snake);
