@@ -115,10 +115,10 @@ var Room = (function () {
 	 */
 	Room.prototype.add = function (entity) {
 		if (!Entity.isEntity(entity))
-			throw new TypeError("Room.add: type of entity does not mixin Entity");
+			throw new TypeError("Room::add: type of entity does not mixin Entity");
 		this.entities.push(entity);
 		var addActions = [];
-		var actions = assertAction(entity.onAdd(this), "Room.add");
+		var actions = assertAction(entity.onAdd(this), "Room::add");
 		if (actions !== undefined)
 			addActions = addActions.concat(actions);
 		addActions.forEach(function (action) { action.apply(this) }, this);
@@ -216,7 +216,7 @@ var Room = (function () {
 	Room.prototype.update = function () {
 		var updateActions = [];
 		this.entities.forEach(function (entity) {
-			var actions = assertAction(entity.update(), "Room.update");
+			var actions = assertAction(entity.update(), "Room::update");
 			if (actions !== undefined)
 				updateActions = updateActions.concat(actions);
 		});
@@ -226,10 +226,10 @@ var Room = (function () {
 		for (var i = 0; i < this.entities.length; ++i) {
 			for (var j = i + 1; j < this.entities.length; ++j) {
 				if (this.entities[i].x === this.entities[j].x && this.entities[i].y === this.entities[j].y) {
-					var iAction = assertAction(this.entities[i].collide(this.entities[j]), "Room.update");
+					var iAction = assertAction(this.entities[i].collide(this.entities[j]), "Room::update");
 					if (iAction !== undefined)
 						collideActions = collideActions.concat(iAction);
-					var jAction = assertAction(this.entities[j].collide(this.entities[i]), "Room.update");
+					var jAction = assertAction(this.entities[j].collide(this.entities[i]), "Room::update");
 					if (jAction !== undefined)
 						collideActions = collideActions.concat(jAction);
 				}

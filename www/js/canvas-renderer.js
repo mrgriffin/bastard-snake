@@ -57,7 +57,7 @@ CanvasRenderer.prototype.end = function () {};
  */
 CanvasRenderer.prototype.draw = function (entity) {
 	if (!Entity.isEntity(entity))
-		throw new TypeError("CanvasRenderer.draw: type of entity does not mixin Entity");
+		throw new TypeError("CanvasRenderer::draw: type of entity does not mixin Entity");
 	var drawEntity = this.drawEntity[entity.name];
 	if (drawEntity)
 		drawEntity.call(this, entity);

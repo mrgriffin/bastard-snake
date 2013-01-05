@@ -47,13 +47,13 @@ var Entity = (function () {
 		 */
 		collide: function (that) {
 			if (!Entity.isEntity(that))
-				throw new TypeError("Entity.collide: type of that does not mixin Entity");
+				throw new TypeError("Entity::collide: type of that does not mixin Entity");
 			// TODO: Throw a TypeError if any of the onCollide handlers use an undefined Entity type.
 			for (var i in this.onCollide)
 				if (that._entity_name === i)
-					return assertAction(this.onCollide[i].call(this, that), "Entity.collide");
+					return assertAction(this.onCollide[i].call(this, that), "Entity::collide");
 			if ('else' in this.onCollide)
-				return assertAction(this.onCollide['else'].call(this, that), "Entity.collide");
+				return assertAction(this.onCollide['else'].call(this, that), "Entity::collide");
 		/*!
 		 * \property Action | Action[] (Entity)[] Entity::onCollide
 		 * \protected
@@ -73,7 +73,7 @@ var Entity = (function () {
 		 * \sa Entity::onUpdate
 		 */
 		}, update: function () {
-			var actions = assertAction(this.onUpdate(), "Entity.update");
+			var actions = assertAction(this.onUpdate(), "Entity::update");
 			if (this.vx !== undefined)
 				this.x += this.vx;
 			if (this.vy !== undefined)
@@ -175,7 +175,15 @@ var Entity = (function () {
 		 */
 		}, mixin: function (klass) {
 			if (klass.name === 'else')
-				throw new RangeError("Entity.mixin: klass name is reserved (" + klass.name + ")");
+				throw new RangeError("Entity::mixin: klass name is reserved (" + klass.name + ")");
+			/*!
+			 * \property const String Entity::_entity_name
+			 * \private
+			 * \brief The name of the class that \c Entity is mixed in to.
+			 * \detail Used by \c collide to resolve which \c onCollide handler to execute.
+			 * \sa Entity::collide
+			 * \sa Entity::onCollide
+			 */
 			klass.prototype._entity_name = klass.name;
 			for (var property in entityPrototype)
 				klass.prototype[property] = entityPrototype[property];
