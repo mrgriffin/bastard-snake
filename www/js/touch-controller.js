@@ -5,15 +5,33 @@
 
 /*!
  * \class TouchController
- * \implements Controller
  * \brief Controls a \c Snake via the mouse in a way suitable for touch-screen devices.
+ */
+/*!
+ * \fn TouchController::TouchController(Snake snake, HTMLElement element)
+ * \memberof TouchController
+ * \public
+ * \brief Constructs a touch controller that controls \p snake via touching \p element.
+ * \detail Touches on the left half of \p element rotate \c snake counterclockwise, and touches on the right half clockwise.
  * \warning Sets the \c position css property of \p element to \c relative.
  */
 function TouchController(snake, element) {
+	/*!
+	 * \property HTMLElement TouchController::element
+	 * \memberof TouchController
+	 * \private
+	 * \brief The element that controls the snake when touched.
+	 */
 	this.element = element;
 
 	element.style.position = 'relative';
 
+	/*!
+	 * \property HTMLElement TouchController::left
+	 * \memberof TouchController
+	 * \private
+	 * \brief The element on the left half of \p element that rotates the snake counterclockwise when touched.
+	 */
 	this.left = document.createElement('div');
 	this.left.style.position = 'absolute';
 	this.left.style.top = '0';
@@ -25,6 +43,12 @@ function TouchController(snake, element) {
 		snake.newDirection = snake.direction.ccw();
 	});
 
+	/*!
+	 * \property HTMLElement TouchController::right
+	 * \memberof TouchController
+	 * \private
+	 * \brief The element on the right half of \p element that rotates the snake clockwise when touched.
+	 */
 	this.right = document.createElement('div');
 	this.right.style.position = 'absolute';
 	this.right.style.top = '0';
@@ -37,6 +61,12 @@ function TouchController(snake, element) {
 	});
 }
 
+/*!
+ * \fn TouchController::remove()
+ * \memberof TouchContoller
+ * \public
+ * \brief Removes this touch controller from \c element.
+ */
 TouchController.prototype.remove = function () {
 	this.element.removeChild(this.left);
 	this.element.removeChild(this.right);
