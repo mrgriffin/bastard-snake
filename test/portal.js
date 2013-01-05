@@ -15,4 +15,4 @@ var testPortal = {
 	}
 };
 
-TestRunner.runAll(testPortal, print);
+quit(!TestRunner.runAll(testPortal, print));

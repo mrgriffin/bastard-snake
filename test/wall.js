@@ -12,4 +12,4 @@ var testWall = {
 	}
 };
 
-TestRunner.runAll(testWall, print);
+quit(!TestRunner.runAll(testWall, print));

@@ -22,4 +22,4 @@ var testDirection = {
 	}
 };
 
-TestRunner.runAll(testDirection, print);
+quit(!TestRunner.runAll(testDirection, print));

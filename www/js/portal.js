@@ -10,19 +10,40 @@
  */
 var Portal = (function () {
 	function Portal(x, y) {
+		/*!
+		 * \property int Portal::x
+		 * \protected
+		 * \brief The X coordinate of this portal.
+		 */
 		this.x = x;
+		/*!
+		 * \property int Portal::y
+		 * \protected
+		 * \brief The Y coordinate of this portal.
+		 */
 		this.y = y;
+		/*!
+		 * \property Portal Portal::pair
+		 * \private
+		 * \brief The portal that this portal teleports entities to.
+		 */
 	}
 	Entity.mixin(Portal);
+
 	Portal.prototype.onCollide = {
+		/*!
+		 * \fn Action | Action[] Portal::onCollide(Entity else)
+		 * \protected
+		 * \brief Teleports \p else to the position of \c pair.
+		 */
 		else: function (that) {
-			return Entity.move(that, this.pair.x, this.pair.y);
+			return new Entity.MoveAction(that, this.pair.x, this.pair.y);
 		}
 	};	
 
 	/*!
-	 * \fn Portal[] makePortals(x1, y1, x2, y2)
-	 * \memberof Portal
+	 * \fn Portal[] Portal::makePortals(x1, y1, x2, y2)
+	 * \public
 	 * \brief Returns an array of two connected portals at \p x1, \p y1 and \p x2, \p y2.
 	 */
 	function makePortals(x1, y1, x2, y2) {
