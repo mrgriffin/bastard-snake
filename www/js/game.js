@@ -161,7 +161,9 @@ Game.prototype.makeRoom = function (width, height) {
 // TODO: This can be a free function.
 // TODO: This must not return cells in the doorways.
 Game.prototype.getEmptyCell = function (room) {
-	var emptyCells = room.getCells(function (cell) { return cell.entities.length === 0; });
+	var emptyCells = room.getCells(function (cell) {
+		return cell.x > 0 && cell.x < room.width - 1 && cell.y > 0 && cell.y < room.height - 1 && cell.entities.length === 0;
+	});
 	return emptyCells[Math.floor(Math.random() * emptyCells.length)];
 };
 
@@ -219,7 +221,7 @@ Game.prototype.update = function () {
 		var nextRoom = undefined;
 		var nextX = this.snake.x, nextY = this.snake.y;
 
-		if (this.snake.y === 0) {
+		if (this.snake.y === -1) {
 			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) - this.width];
 			nextY = nextRoom.height - 1;
 		}
@@ -234,7 +236,7 @@ Game.prototype.update = function () {
 			nextY = 0;
 		}
 
-		if (this.snake.x === 0) {
+		if (this.snake.x === -1) {
 			nextRoom = this.rooms[this.rooms.indexOf(this.currentRoom) - 1];
 			nextX = nextRoom.width - 1;
 		}
