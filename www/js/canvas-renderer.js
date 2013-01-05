@@ -39,6 +39,11 @@ function CanvasRenderer(element) {
 CanvasRenderer.prototype.begin = function () {
 	// HINT: Resets the canvas element.
 	this.canvas.width = this.canvas.width;
+	/*!
+	 * \property int CanvasRenderer::portals
+	 * \private
+	 * \brief Count of portals drawn so far this frame.
+	 */
 	this.portals = 0;
 };
 
@@ -58,7 +63,7 @@ CanvasRenderer.prototype.end = function () {};
 CanvasRenderer.prototype.draw = function (entity) {
 	if (!Entity.isEntity(entity))
 		throw new TypeError("CanvasRenderer::draw: type of entity does not mixin Entity");
-	var drawEntity = this.drawEntity[entity.name];
+	var drawEntity = this.drawEntity[entity._entity_name];
 	if (drawEntity)
 		drawEntity.call(this, entity);
 };
