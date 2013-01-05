@@ -14,7 +14,7 @@
  * \detail Creates a snake in a room surrounded by walls containing 2 portals and a piece of food.
  */
 function Game() {
-	var width = 9, height = 9;
+	var width = 19, height = 19;
 
 	/*!
 	 * \property Room Game::room
