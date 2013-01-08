@@ -186,6 +186,8 @@ Game.prototype.makeRoom = function (width, height) {
 	// WARNING: The portals may overlap.
 	room.addAll(this.makePortals(this.getEmptyCell(room), this.getEmptyCell(room)));
 
+	room.foodDrops = 0;
+
 	return room;
 };
 
@@ -314,8 +316,8 @@ Game.prototype.update = function () {
 
 		}
 
-		// Spawn food if it has been eaten.
-		if (!this.currentRoom.contains(function (entity) { return entity instanceof Food; }))
+		// Spawn food if it has been eaten up to 10 times.
+		if (!this.currentRoom.contains(function (entity) { return entity instanceof Food; }) && ++this.currentRoom.foodDrops < 10)
 			this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 	}
 
