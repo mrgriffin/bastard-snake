@@ -10,7 +10,7 @@ image-snake : images/snake.svg
 	inkscape -z -e"www/img/snake-head.png" -ji 'head' -a"72:0:96:24" -f"$<"
 
 .PHONY : push
-push : check
+push : all check
 	scp -r www/* mgriffin_mgriffin@ssh.phx.nearlyfreespeech.net:/home/public/bastard-snake
 
 check : check-makefile check-index check-fixtures check-canvas-renderer check-direction check-entity check-food check-game check-portal check-room check-snake check-wall
