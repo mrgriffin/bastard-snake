@@ -1,6 +1,10 @@
 all : images
 
-images : image-snake image-wall
+images : image-food image-snake image-wall
+
+image-food : images/mouse.svg
+	[ -d 'www/img' ] || mkdir 'www/img'
+	inkscape -z -e'www/img/food.png' -a'0:0:24:24' -f"$<"
 
 image-snake : images/snake.svg
 	[ -d 'www/img' ] || mkdir 'www/img'

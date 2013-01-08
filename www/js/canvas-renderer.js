@@ -83,6 +83,14 @@ function CanvasRenderer(element) {
 	this.wall[3].setAttribute('src', 'img/wall-3.png');
 	this.wall[4] = document.createElement('img');
 	this.wall[4].setAttribute('src', 'img/wall-4.png');
+
+	/*!
+	 * \property HTMLImageElement CanvasRenderer::food
+	 * \private
+	 * \brief The image used to render food.
+	 */
+	this.food = document.createElement('img');
+	this.food.setAttribute('src', 'img/food.png');
 }
 
 /*!
@@ -281,8 +289,7 @@ CanvasRenderer.prototype.drawEntity = {
 	 * \detail Food is drawn as a red square.
 	 */
 	Food: function (food) {
-		this.context.fillStyle = '#ff0000';
-		this.context.fillRect(food.x * 24 + 1, food.y * 24 + 1, 22, 22);
+		this.context.drawImage(this.food, food.x * 24, food.y * 24);
 	/*!
 	 * \fn void CanvasRenderer::draw(Portal portal)
 	 * \private
