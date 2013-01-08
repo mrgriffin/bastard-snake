@@ -82,7 +82,7 @@ Game.prototype.getRoom = function (x, y) {
 Game.prototype.makeRooms = function (width, height) {
 	var rooms = new Array(width * height);
 
-	var roomWidth = 19, roomHeight = 19;
+	var roomWidth = 15, roomHeight = 15;
 	var roomMidX = Math.floor(roomWidth / 2), roomMidY = Math.floor(roomHeight / 2);
 
 	// Ensure the midpoint contains a room.
@@ -153,6 +153,12 @@ Game.prototype.makeRoom = function (width, height) {
 			room.add(new Wall(width - 1, y));
 		}
 	}
+
+	var templates = [
+		[],
+	];
+
+	templates[Math.floor(Math.random() * templates.length)].forEach(function (pos) { room.add(new Wall(pos.x, pos.y)); });
 
 	// WARNING: The portals may overlap.
 	room.addAll(this.makePortals(this.getEmptyCell(room), this.getEmptyCell(room)));
