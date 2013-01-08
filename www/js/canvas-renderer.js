@@ -15,7 +15,7 @@
  */
 function CanvasRenderer(element) {
 	/*!
-	 * \property HTMLElement CanvasRenderer::canvas
+	 * \property HTMLCanvasElement CanvasRenderer::canvas
 	 * \private
 	 * \brief The \c canvas element that this renders on.
 	 */
@@ -155,8 +155,10 @@ CanvasRenderer.prototype.end = function () {
 			if (snake[i].x === snake[i - 1].x && snake[i].y === snake[i - 1].y)
 				continue;
 
-			// Skip segments that overlap the tail.
-			if (snake[i].x === tailSegment.x && snake[i].y === tailSegment.y)
+			// Skip segments that overlap the tail unless at an edge.
+			if (snake[i].x === tailSegment.x && snake[i].y === tailSegment.y &&
+			// TODO: Have a draw(Room) method so we don't need to hard code 19.
+			    !(snake[i].x === 0 || snake[i].x === 18 || snake[i].y === 0 || snake[i].y === 18))
 				continue;
 
 			if (parallel(snake[i - 1], snake[i], snake[i + 1])) {
@@ -181,8 +183,10 @@ CanvasRenderer.prototype.end = function () {
 			lastSegment = snake[i];
 		}
 
-		// Draw the tail.
-		if (snake.length > 1 && (lastSegment.x !== snake[0].x || lastSegment.y !== snake[0].y)) {
+		// Draw the tail unless it overlaps the head, or overlaps a segment at an edge.
+		if (snake.length > 1 && (tailSegment.x !== snake[0].x || tailSegment.y !== snake[0].y) &&
+		// TODO: Have a draw(Room) method so we don't need to hard code 19.
+		    !((tailSegment.x === 0 || tailSegment.x === 18 || tailSegment.y === 0 || tailSegment.y === 18) && tailSegment.x === lastSegment.x && tailSegment.y === lastSegment.y)) {
 			drawScaledRotated(this.context,
 			                  this.snakeTail,
 			                  tailSegment.x * 24,
