@@ -154,8 +154,31 @@ Game.prototype.makeRoom = function (width, height) {
 		}
 	}
 
+	// HINT: These templates are defined clockwise around the room, starting with up or top left.
+	var W = width - 1, H = height - 1, w = Math.floor(width / 2), h = Math.floor(height / 2);
 	var templates = [
-		[],
+		[
+		],[
+			{x:2,y:4}, {x:3,y:4}, {x:4,y:4}, {x:4,y:3}, {x:4,y:2},
+			{x:W-2,y:4}, {x:W-3,y:4}, {x:W-4,y:4}, {x:W-4,y:3}, {x:W-4,y:2},
+			{x:W-2,y:H-4}, {x:W-3,y:H-4}, {x:W-4,y:H-4}, {x:W-4,y:H-3}, {x:W-4,y:H-2},
+			{x:2,y:H-4}, {x:3,y:H-4}, {x:4,y:H-4}, {x:4,y:H-3}, {x:4,y:H-2}
+		], [
+			{x:w-2,y:1}, {x:w-2,y:2}, {x:w-2,y:3}, {x:w+2,y:1}, {x:w+2,y:2}, {x:w+2,y:3},
+			{x:W-1,y:h-2}, {x:W-2,y:h-2}, {x:W-3,y:h-2}, {x:W-1,y:h+2}, {x:W-2,y:h+2}, {x:W-3,y:h+2},
+			{x:w-2,y:H-1}, {x:w-2,y:H-2}, {x:w-2,y:H-3}, {x:w+2,y:H-1}, {x:w+2,y:H-2}, {x:w+2,y:H-3},
+			{x:1,y:h-2}, {x:2,y:h-2}, {x:3,y:h-2}, {x:1,y:h+2}, {x:2,y:h+2}, {x:3,y:h+2}
+		], [
+			{x:w-1,y:h-4}, {x:w-2,y:h-4}, {x:w-3,y:h-3}, {x:w-4,y:h-2}, {x:w-4,y:h-1},
+			{x:w+1,y:h-4}, {x:w+2,y:h-4}, {x:w+3,y:h-3}, {x:w+4,y:h-2}, {x:w+4,y:h-1},
+			{x:w+1,y:h+4}, {x:w+2,y:h+4}, {x:w+3,y:h+3}, {x:w+4,y:h+2}, {x:w+4,y:h+1},
+			{x:w-1,y:h+4}, {x:w-2,y:h+4}, {x:w-3,y:h+3}, {x:w-4,y:h+2}, {x:w-4,y:h+1}
+		], [
+			{x:w-4,y:h-4}, {x:w-3,y:h-4}, {x:w-2,y:h-4}, {x:w-1,y:h-4}, {x:w+1,y:h-4}, {x:w+2,y:h-4}, {x:w+3,y:h-4}, {x:w+4,y:h-4},
+			{x:w-4,y:h-2}, {x:w-3,y:h-2}, {x:w-1,y:h-2}, {x:w,y:h-2}, {x:w+1,y:h-2}, {x:w+3,y:h-2}, {x:w+4,y:h-2},
+			{x:w-4,y:h+2}, {x:w-3,y:h+2}, {x:w-1,y:h+2}, {x:w,y:h+2}, {x:w+1,y:h+2}, {x:w+3,y:h+2}, {x:w+4,y:h+2},
+			{x:w-4,y:h+4}, {x:w-3,y:h+4}, {x:w-2,y:h+4}, {x:w-1,y:h+4}, {x:w+1,y:h+4}, {x:w+2,y:h+4}, {x:w+3,y:h+4}, {x:w+4,y:h+4}
+		]
 	];
 
 	templates[Math.floor(Math.random() * templates.length)].forEach(function (pos) { room.add(new Wall(pos.x, pos.y)); });
