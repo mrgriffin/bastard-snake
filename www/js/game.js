@@ -82,7 +82,7 @@ Game.prototype.getRoom = function (x, y) {
 Game.prototype.makeRooms = function (width, height) {
 	var rooms = new Array(width * height);
 
-	var roomWidth = 19, roomHeight = 19;
+	var roomWidth = 15, roomHeight = 15;
 	var roomMidX = Math.floor(roomWidth / 2), roomMidY = Math.floor(roomHeight / 2);
 
 	// Ensure the midpoint contains a room.
@@ -154,8 +154,39 @@ Game.prototype.makeRoom = function (width, height) {
 		}
 	}
 
+	// HINT: These templates are defined clockwise around the room, starting with up or top left.
+	var W = width - 1, H = height - 1, w = Math.floor(width / 2), h = Math.floor(height / 2);
+	var templates = [
+		[
+		],[
+			{x:2,y:4}, {x:3,y:4}, {x:4,y:4}, {x:4,y:3}, {x:4,y:2},
+			{x:W-2,y:4}, {x:W-3,y:4}, {x:W-4,y:4}, {x:W-4,y:3}, {x:W-4,y:2},
+			{x:W-2,y:H-4}, {x:W-3,y:H-4}, {x:W-4,y:H-4}, {x:W-4,y:H-3}, {x:W-4,y:H-2},
+			{x:2,y:H-4}, {x:3,y:H-4}, {x:4,y:H-4}, {x:4,y:H-3}, {x:4,y:H-2}
+		], [
+			{x:w-2,y:1}, {x:w-2,y:2}, {x:w-2,y:3}, {x:w+2,y:1}, {x:w+2,y:2}, {x:w+2,y:3},
+			{x:W-1,y:h-2}, {x:W-2,y:h-2}, {x:W-3,y:h-2}, {x:W-1,y:h+2}, {x:W-2,y:h+2}, {x:W-3,y:h+2},
+			{x:w-2,y:H-1}, {x:w-2,y:H-2}, {x:w-2,y:H-3}, {x:w+2,y:H-1}, {x:w+2,y:H-2}, {x:w+2,y:H-3},
+			{x:1,y:h-2}, {x:2,y:h-2}, {x:3,y:h-2}, {x:1,y:h+2}, {x:2,y:h+2}, {x:3,y:h+2}
+		], [
+			{x:w-1,y:h-4}, {x:w-2,y:h-4}, {x:w-3,y:h-3}, {x:w-4,y:h-2}, {x:w-4,y:h-1},
+			{x:w+1,y:h-4}, {x:w+2,y:h-4}, {x:w+3,y:h-3}, {x:w+4,y:h-2}, {x:w+4,y:h-1},
+			{x:w+1,y:h+4}, {x:w+2,y:h+4}, {x:w+3,y:h+3}, {x:w+4,y:h+2}, {x:w+4,y:h+1},
+			{x:w-1,y:h+4}, {x:w-2,y:h+4}, {x:w-3,y:h+3}, {x:w-4,y:h+2}, {x:w-4,y:h+1}
+		], [
+			{x:w-4,y:h-4}, {x:w-3,y:h-4}, {x:w-2,y:h-4}, {x:w-1,y:h-4}, {x:w+1,y:h-4}, {x:w+2,y:h-4}, {x:w+3,y:h-4}, {x:w+4,y:h-4},
+			{x:w-4,y:h-2}, {x:w-3,y:h-2}, {x:w-1,y:h-2}, {x:w,y:h-2}, {x:w+1,y:h-2}, {x:w+3,y:h-2}, {x:w+4,y:h-2},
+			{x:w-4,y:h+2}, {x:w-3,y:h+2}, {x:w-1,y:h+2}, {x:w,y:h+2}, {x:w+1,y:h+2}, {x:w+3,y:h+2}, {x:w+4,y:h+2},
+			{x:w-4,y:h+4}, {x:w-3,y:h+4}, {x:w-2,y:h+4}, {x:w-1,y:h+4}, {x:w+1,y:h+4}, {x:w+2,y:h+4}, {x:w+3,y:h+4}, {x:w+4,y:h+4}
+		]
+	];
+
+	templates[Math.floor(Math.random() * templates.length)].forEach(function (pos) { room.add(new Wall(pos.x, pos.y)); });
+
 	// WARNING: The portals may overlap.
 	room.addAll(this.makePortals(this.getEmptyCell(room), this.getEmptyCell(room)));
+
+	room.foodDrops = 0;
 
 	return room;
 };
@@ -285,8 +316,8 @@ Game.prototype.update = function () {
 
 		}
 
-		// Spawn food if it has been eaten.
-		if (!this.currentRoom.contains(function (entity) { return entity instanceof Food; }))
+		// Spawn food if it has been eaten up to 10 times.
+		if (!this.currentRoom.contains(function (entity) { return entity instanceof Food; }) && ++this.currentRoom.foodDrops < 10)
 			this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 	}
 

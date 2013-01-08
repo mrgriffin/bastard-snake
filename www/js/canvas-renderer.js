@@ -151,8 +151,8 @@ CanvasRenderer.prototype.end = function () {
 
 			// Skip segments that overlap the tail unless at an edge.
 			if (snake[i].x === tailSegment.x && snake[i].y === tailSegment.y &&
-			// TODO: Have a draw(Room) method so we don't need to hard code 19.
-			    !(snake[i].x === 0 || snake[i].x === 18 || snake[i].y === 0 || snake[i].y === 18))
+			// TODO: Have a draw(Room) method so we don't need to hard code room sizes.
+			    !(snake[i].x === 0 || snake[i].x === 14 || snake[i].y === 0 || snake[i].y === 14))
 				continue;
 
 			var dirFrom = directionBetween(snake[i], snake[i + 1]);
@@ -182,8 +182,8 @@ CanvasRenderer.prototype.end = function () {
 
 		// Draw the tail unless it overlaps the head, or overlaps a segment at an edge.
 		if (snake.length > 1 && (tailSegment.x !== snake[0].x || tailSegment.y !== snake[0].y) &&
-		// TODO: Have a draw(Room) method so we don't need to hard code 19.
-		    !((tailSegment.x === 0 || tailSegment.x === 18 || tailSegment.y === 0 || tailSegment.y === 18) && tailSegment.x === lastSegment.x && tailSegment.y === lastSegment.y)) {
+		// TODO: Have a draw(Room) method so we don't need to hard room sizes.
+		    !((tailSegment.x === 0 || tailSegment.x === 14 || tailSegment.y === 0 || tailSegment.y === 14) && tailSegment.x === lastSegment.x && tailSegment.y === lastSegment.y)) {
 			drawScaledRotated(this.context,
 			                  this.snakeTail,
 			                  tailSegment.x * 24,
