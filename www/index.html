@@ -28,31 +28,30 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
 	var renderer = new CanvasRenderer(container);
 	var FPS = 4;
-	var gameover = true;
 
 	// TODO: Draw a demo instead.
-	new Game().drawOn(renderer);
+	var game = new Game(), kbc, tc, updateInterval;
+	game.drawOn(renderer);
 
-	window.addEventListener('mouseup', function () { if (gameover) newGame(); });
-	window.addEventListener('touchend', function () { if (gameover) newGame(); });
+	document.addEventListener('mouseup', function () { startGame(); });
+	document.addEventListener('touchend', function () { startGame(); });
 	// TODO: Do not trigger if the user presses a modifier key.
-	window.addEventListener('keydown', function () { if (gameover) newGame(); });
+	document.addEventListener('keydown', function () { startGame(); });
 
-	var newGame = function () {
-		var game = new Game();
+	var startGame = function () {
+		game = game || new Game();
 		// TODO: Not violate the Law of Demeter when constructing these controllers.
-		var kbc = new KeyboardController(game.snake);
-		var tc = new TouchController(game.snake, container);
+		kbc = kbc || new KeyboardController(game.snake);
+		tc = tc || new TouchController(game.snake, container);
 		game.drawOn(renderer);
-		gameover = false;
-		var updateInterval = window.setInterval(function () {
+		updateInterval = updateInterval || window.setInterval(function () {
 			if (game.update()) {
 				game.drawOn(renderer);
 			} else {
 				window.clearInterval(updateInterval);
-				gameover = true;
 				kbc.remove();
 				tc.remove();
+				game = kbc = tc = updateInterval = null;
 			}
 		}, Math.floor(1000 / FPS));
 	};

@@ -43,7 +43,7 @@ function Game() {
 	this.currentRoom = this.getRoom(Math.floor(this.width / 2), Math.floor(this.height / 2));
 
 	/*!
-	 * \property Snake Game::Snake
+	 * \property Snake Game::snake
 	 * \private
 	 * \brief The snake that is the protagonist of this game.
 	 */
@@ -55,6 +55,13 @@ function Game() {
 	 * \brief The current piece of food.
 	 */
 	this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
+
+	/*!
+	 * \property bool Game::gameover
+	 * \private
+	 * \brief Whether this game is over.
+	 */
+	this.gameover = false;
 }
 
 /*!
@@ -280,7 +287,7 @@ Game.prototype.update = function () {
 			this.currentRoom.add(this.food = this.makeFood(this.getEmptyCell(this.currentRoom)));
 	}
 
-	return !this.snake.crashed;
+	return !(this.gameover = this.snake.crashed);
 };
 
 /*!
