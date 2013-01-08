@@ -63,6 +63,26 @@ function CanvasRenderer(element) {
 	 */
 	this.snakeTail = document.createElement('img');
 	this.snakeTail.setAttribute('src', 'img/snake-tail.png');
+
+	/*!
+	 * \property HTMLImageElement[] CanvasRenderer::wall
+	 * \private
+	 * \brief The images used to render walls with \c n segments.
+	 */
+	this.wall = [];
+	this.wall[0] = document.createElement('img');
+	this.wall[0].setAttribute('src', 'img/wall-0.png');
+	this.wall[1] = document.createElement('img');
+	this.wall[1].setAttribute('src', 'img/wall-1.png');
+	this.wall[2] = [];
+	this.wall[2][0] = document.createElement('img');
+	this.wall[2][0].setAttribute('src', 'img/wall-2s.png');
+	this.wall[2][1] = document.createElement('img');
+	this.wall[2][1].setAttribute('src', 'img/wall-2c.png');
+	this.wall[3] = document.createElement('img');
+	this.wall[3].setAttribute('src', 'img/wall-3.png');
+	this.wall[4] = document.createElement('img');
+	this.wall[4].setAttribute('src', 'img/wall-4.png');
 }
 
 /*!
@@ -87,6 +107,16 @@ CanvasRenderer.prototype.begin = function () {
 	 * \brief Snakes to draw this frame.
 	 */
 	this.snakes = [];
+
+	/*!
+	 * \property Wall[] CanvasRenderer::walls
+	 * \private
+	 * \brief Walls to draw this frame.
+	 */
+	this.walls = [];
+
+	// TODO: Have a draw(Room) method so we don't need to hard room sizes.
+	this.roomWidth = this.roomHeight = 15;
 };
 
 /*!
@@ -103,6 +133,41 @@ CanvasRenderer.prototype.end = function () {
 		context.drawImage(image, -image.width / 2, -image.height / 2);
 		context.restore();
 	}
+
+	// Draw the walls.
+	this.walls.forEach(function (wall) {
+		var neighbors = [
+			wall.y !== 0 ? !!this.walls[(wall.y - 1) * this.roomHeight + wall.x] : true,
+			wall.x !== this.roomWidth - 1 ? !!this.walls[wall.y * this.roomHeight + wall.x + 1] : true,
+			wall.y !== this.roomHeight - 1 ? !!this.walls[(wall.y + 1) * this.roomHeight + wall.x] : true,
+			wall.x !== 0 ? !!this.walls[wall.y * this.roomHeight + wall.x - 1] : true
+		];
+
+		// Number of neighbors that are set to true.
+		var actualNeighbors = neighbors.reduce(function (count, wall) { return count + (wall ? 1 : 0); }, 0);
+
+		var image = this.wall[actualNeighbors];
+		var angle;
+
+		switch (actualNeighbors) {
+		case 0: angle = 0; break;
+		case 1: angle = Math.PI * neighbors.indexOf(true) / 2; break;
+		case 2:
+			if (neighbors[0] && neighbors[2] || neighbors[1] && neighbors[3]) {
+				image = this.wall[2][0];
+				angle = neighbors[0] ? 0 : Math.PI * 0.5;
+			} else {
+				image = this.wall[2][1];
+				// HINT: -2 is out of the domain of this function.
+				angle = Math.PI * neighbors.reduce(function (first, value, index) { return (!value || first === index - 1) ? first : index }, -2) / 2;
+			}
+			break;
+		case 3: angle = Math.PI * neighbors.indexOf(false) / 2; break;
+		case 4: angle = 0; break;
+		}
+		
+		drawScaledRotated(this.context, image, wall.x * 24, wall.y * 24, 1, 1, angle);
+	}, this);
 
 	// Returns the direction between to and from, or undefined if they are not adjacent.
 	function directionBetween(to, from) {
@@ -151,8 +216,7 @@ CanvasRenderer.prototype.end = function () {
 
 			// Skip segments that overlap the tail unless at an edge.
 			if (snake[i].x === tailSegment.x && snake[i].y === tailSegment.y &&
-			// TODO: Have a draw(Room) method so we don't need to hard code room sizes.
-			    !(snake[i].x === 0 || snake[i].x === 14 || snake[i].y === 0 || snake[i].y === 14))
+			    !(snake[i].x === 0 || snake[i].x === this.roomWidth - 1 || snake[i].y === 0 || snake[i].y === this.roomHeight - 1))
 				continue;
 
 			var dirFrom = directionBetween(snake[i], snake[i + 1]);
@@ -182,8 +246,8 @@ CanvasRenderer.prototype.end = function () {
 
 		// Draw the tail unless it overlaps the head, or overlaps a segment at an edge.
 		if (snake.length > 1 && (tailSegment.x !== snake[0].x || tailSegment.y !== snake[0].y) &&
-		// TODO: Have a draw(Room) method so we don't need to hard room sizes.
-		    !((tailSegment.x === 0 || tailSegment.x === 14 || tailSegment.y === 0 || tailSegment.y === 14) && tailSegment.x === lastSegment.x && tailSegment.y === lastSegment.y)) {
+		    !((tailSegment.x === 0 || tailSegment.x === this.roomWidth - 1 || tailSegment.y === 0 || tailSegment.y === this.roomHeight - 1) &&
+		      tailSegment.x === lastSegment.x && tailSegment.y === lastSegment.y)) {
 			drawScaledRotated(this.context,
 			                  this.snakeTail,
 			                  tailSegment.x * 24,
@@ -254,7 +318,6 @@ CanvasRenderer.prototype.drawEntity = {
 	 * \detail Walls are drawn as black squares.
 	 */
 	}, Wall: function (wall) {
-		this.context.fillStyle = '#000000';
-		this.context.fillRect(wall.x * 24 + 1, wall.y * 24 + 1, 22, 22);
+		this.walls[wall.y * this.roomWidth + wall.x] = wall;
 	}
 };

@@ -1,13 +1,22 @@
 all : images
 
-images : image-snake
+images : image-snake image-wall
 
 image-snake : images/snake.svg
-	[ -d "www/img" ] || mkdir "www/img"
-	inkscape -z -e"www/img/snake-tail.png" -ji 'tail' -a"0:0:24:24" -f"$<"
-	inkscape -z -e"www/img/snake-body.png" -ji 'body' -a"24:0:48:24" -f"$<"
-	inkscape -z -e"www/img/snake-bend.png" -ji 'bend' -a"48:0:72:24" -f"$<"
-	inkscape -z -e"www/img/snake-head.png" -ji 'head' -a"72:0:96:24" -f"$<"
+	[ -d 'www/img' ] || mkdir 'www/img'
+	inkscape -z -e'www/img/snake-tail.png' -ji 'tail' -a'0:0:24:24' -f"$<"
+	inkscape -z -e'www/img/snake-body.png' -ji 'body' -a'24:0:48:24' -f"$<"
+	inkscape -z -e'www/img/snake-bend.png' -ji 'bend' -a'48:0:72:24' -f"$<"
+	inkscape -z -e'www/img/snake-head.png' -ji 'head' -a'72:0:96:24' -f"$<"
+
+image-wall : images/wall.svg
+	[ -d 'www/img' ] || mkdir 'www/img'
+	inkscape -z -e'www/img/wall-0.png' -ji '0' -a '0:0:24:24' -f"$<"
+	inkscape -z -e'www/img/wall-1.png' -ji '1' -a '24:0:48:24' -f"$<"
+	inkscape -z -e'www/img/wall-2c.png' -ji '2c' -a '48:0:72:24' -f"$<"
+	inkscape -z -e'www/img/wall-2s.png' -ji '2s' -a '72:0:96:24' -f"$<"
+	inkscape -z -e'www/img/wall-3.png' -ji '3' -a '96:0:120:24' -f"$<"
+	inkscape -z -e'www/img/wall-4.png' -ji '4' -a '120:0:144:24' -f"$<"
 
 .PHONY : push
 push : all check
