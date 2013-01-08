@@ -20,8 +20,8 @@ function CanvasRenderer(element) {
 	 * \brief The \c canvas element that this renders on.
 	 */
 	this.canvas = document.createElement('canvas');
-	this.canvas.width = 24 * 19;
-	this.canvas.height = 24 * 19;
+	this.canvas.width = 24 * 15;
+	this.canvas.height = 24 * 15;
 	/*!
 	 * \property CanvasRenderingContext2D CanvasRenderer::context
 	 * \private
