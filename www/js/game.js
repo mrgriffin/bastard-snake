@@ -154,6 +154,9 @@ Game.prototype.makeRoom = function (width, height) {
 		}
 	}
 
+	// WARNING: The portals may overlap.
+	room.addAll(this.makePortals(this.getEmptyCell(room), this.getEmptyCell(room)));
+
 	return room;
 };
 

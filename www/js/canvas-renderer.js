@@ -104,14 +104,11 @@ CanvasRenderer.prototype.end = function () {
 		context.restore();
 	}
 
-	function parallel(entity1, entity2, entity3) {
-		return (entity1.x === entity2.x && entity1.x === entity3.x) ||
-		       (entity1.y === entity2.y && entity1.y === entity3.y);
-	}
-
-	// WARNING: assumes entity1 and entity2 are parallel.
+	// Returns the direction between to and from, or undefined if they are not adjacent.
 	function directionBetween(to, from) {
-		if (to.y < from.y)
+		if (Math.abs(to.x - from.x) + Math.abs(to.y - from.y) !== 1)
+			return undefined;
+		else if (to.y < from.y)
 			return Direction.UP;
 		else if (to.x > from.x)
 			return Direction.RIGHT;
@@ -121,17 +118,14 @@ CanvasRenderer.prototype.end = function () {
 			return Direction.LEFT;
 	}
 
-	function angleBetween(to, via, from) {
-		var dxt = to.x - via.x, dyt = to.y - via.y;
-		var dxf = via.x - from.x, dyf = via.y - from.y;
-
-		if ((dxt === 1 && dyf === -1) || (dyt === 1 && dxf === -1))
+	function angleBetween(dirTo, dirFrom) {
+		if ((dirTo.x === 1 && dirFrom.y === -1) || (dirTo.y === 1 && dirFrom.x === -1))
 			return 0;
-		else if ((dxt === -1 && dyf === -1) || (dyt === 1 && dxf === 1))
+		else if ((dirTo.x === -1 && dirFrom.y === -1) || (dirTo.y === 1 && dirFrom.x === 1))
 			return Math.PI * 0.5;
-		else if ((dyt === -1 && dxf === 1) || (dxt === -1 && dyf === 1))
+		else if ((dirTo.y === -1 && dirFrom.x === 1) || (dirTo.x === -1 && dirFrom.y === 1))
 			return Math.PI;
-		else if ((dyt === -1 && dxf === -1) || (dxt === 1 && dyf === 1))
+		else if ((dirTo.y === -1 && dirFrom.x === -1) || (dirTo.x === 1 && dirFrom.y === 1))
 			return Math.PI * 1.5;
 	}
 
@@ -161,14 +155,17 @@ CanvasRenderer.prototype.end = function () {
 			    !(snake[i].x === 0 || snake[i].x === 18 || snake[i].y === 0 || snake[i].y === 18))
 				continue;
 
-			if (parallel(snake[i - 1], snake[i], snake[i + 1])) {
+			var dirFrom = directionBetween(snake[i], snake[i + 1]);
+			var dirTo = directionBetween(snake[i - 1], snake[i]);
+
+			if (!dirFrom || !dirTo || dirFrom === dirTo) {
 				drawScaledRotated(this.context,
 				                  this.snakeBody,
 				                  snake[i].x * 24,
 				                  snake[i].y * 24,
 				                  i % 2 && snake[i + 1].y !== snake[i - 1].y ? 1 : -1,
 				                  i % 2 && snake[i + 1].x !== snake[i - 1].x ? 1 : -1,
-				                  directionBetween(snake[i - 1], snake[i + 1]).cwRadians());
+				                  (dirFrom ? dirFrom : dirTo).cwRadians());
 			} else {
 				drawScaledRotated(this.context,
 				                  this.snakeBend,
@@ -177,7 +174,7 @@ CanvasRenderer.prototype.end = function () {
 				                  // TODO: Should we be flipping the image under some circumstances?
 				                  1,
 				                  1,
-				                  angleBetween(snake[i - 1], snake[i], snake[i + 1]));
+				                  angleBetween(dirTo, dirFrom));
 			}
 
 			lastSegment = snake[i];
