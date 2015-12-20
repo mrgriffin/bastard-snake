@@ -1,0 +1,12 @@
+- Entity.onRemove?
+- OnEdge event?  Edge pseudo-Entity?  Torus Room-s?  Have Room-s be 2 cells bigger than viewport, and put UnidirectionalPortal-s on the edges?
+- Do we need to maintain a list of Cell-s in Room?
+- Throw RangeError if an Entity goes out of bounds of a Room
+- Add dependency system
+- Highscore mechanism
+- Lift Action.apply to Game?  Remove snake.crashed and replace with Snake.CrashedAction
+- Action examples?
+- Make Room.add private and have Game.add(Entity, Room)
+- Note that Entity.onX should not be called from user code
+- Probably a code smell if we have a function /statement/ in our code (not hiding as well as we could)
+- Refactor Tail so it does not need to know its head
